@@ -48,8 +48,13 @@ public class TelaProduto extends javax.swing.JFrame {
         btnSair = new javax.swing.JButton();
         lbnIdProduto = new javax.swing.JLabel();
         txtIdProduto = new javax.swing.JTextField();
+        btnConsultar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
+        setResizable(false);
+
+        jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
 
         jLabel1.setFont(new java.awt.Font("Lucida Sans", 1, 18)); // NOI18N
         jLabel1.setText("Cadastro de Produto");
@@ -101,6 +106,14 @@ public class TelaProduto extends javax.swing.JFrame {
             }
         });
 
+        btnConsultar.setFont(new java.awt.Font("Lucida Sans", 1, 12)); // NOI18N
+        btnConsultar.setText("Consultar");
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -109,19 +122,6 @@ public class TelaProduto extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jSeparator1)
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(37, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(39, 39, 39)
-                        .addComponent(btnLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(40, 40, 40)
-                        .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(42, 42, 42)
-                .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(55, 55, 55))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -145,11 +145,28 @@ public class TelaProduto extends javax.swing.JFrame {
                                 .addComponent(txtDescProduto)
                                 .addComponent(txtFabriProduto)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtEstProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txtValProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(0, 0, Short.MAX_VALUE))))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(txtEstProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(0, 0, Short.MAX_VALUE))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(txtValProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(btnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(12, 12, 12)
+                                    .addComponent(btnLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGap(152, 152, 152)
+                                    .addComponent(jLabel1)
+                                    .addGap(0, 0, Short.MAX_VALUE)))
+                            .addGap(12, 12, 12)
+                            .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -185,12 +202,13 @@ public class TelaProduto extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbnValProduto)
                     .addComponent(txtValProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCadastrar)
                     .addComponent(btnLimpar)
-                    .addComponent(btnExcluir)
-                    .addComponent(btnSair))
+                    .addComponent(btnSair)
+                    .addComponent(btnConsultar)
+                    .addComponent(btnExcluir))
                 .addGap(16, 16, 16))
         );
 
@@ -206,6 +224,7 @@ public class TelaProduto extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
@@ -227,6 +246,11 @@ public class TelaProduto extends javax.swing.JFrame {
         // TODO add your handling code here:
         dispose();
     }//GEN-LAST:event_btnSairActionPerformed
+
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        // TODO add your handling code here:
+        consultarProduto();
+    }//GEN-LAST:event_btnConsultarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -265,6 +289,7 @@ public class TelaProduto extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCadastrar;
+    private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnSair;
@@ -378,4 +403,52 @@ public class TelaProduto extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Ocorreu um erro ao excluir o produto:\n" + e.getMessage());
     }
   }
+  private void consultarProduto() {
+        try {
+            // Pede ao usuário para inserir o ID do produto a ser consultado
+            String idInput = JOptionPane.showInputDialog(this, "Informe o ID do produto a ser consultado:");
+
+            // Verifica se o usuário cancelou a entrada ou deixou em branco
+            if (idInput == null || idInput.trim().isEmpty()) {
+                return;  // Saia se o usuário cancelou ou deixou em branco
+            }
+
+            // Obtém o ID do produto a ser consultado
+            int idProduto;
+
+            // Validar se o ID é um número válido
+            try {
+                idProduto = Integer.parseInt(idInput);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "ID do produto deve ser um número válido.");
+                return;
+            }
+
+            // Instancia um novo produto
+            Produto produto = new Produto();
+
+            // Verifica se o produto com o ID fornecido existe
+            if (!produto.verificarExistenciaProduto(idProduto)) {
+                JOptionPane.showMessageDialog(this, "Produto com o ID informado não existe.");
+                return;
+            }
+
+            // Obtém os dados do produto
+            produto = produto.consultarProduto(idProduto);
+
+            // Preenche os campos da tela com os dados do produto
+            txtIdProduto.setText(String.valueOf(produto.getIdProduto()));
+            txtNomeProduto.setText(produto.getNomeProduto());
+            txtDescProduto.setText(produto.getDescricao());
+            txtFabriProduto.setText(produto.getFabricacao());
+            txtEstProduto.setText(String.valueOf(produto.getQtdEstoque()));
+            txtValProduto.setText(String.valueOf(produto.getValorUnitario()));
+
+            JOptionPane.showMessageDialog(this, "Produto consultado com sucesso!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Ocorreu um erro ao consultar o produto:\n" + e.getMessage());
+        }
+    }
+  
+
 }

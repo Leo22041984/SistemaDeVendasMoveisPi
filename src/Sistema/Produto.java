@@ -145,6 +145,37 @@ public class Produto {
         return false; // Em caso de erro, assume-se que o produto não existe
     }
 }
- 
-    
+     public Produto consultarProduto(int idProduto) {
+        Produto produto = new Produto();
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Sistema_de_venda_moveis_db_PI","root", "227442");
+            String sql = "SELECT * FROM produto WHERE idProduto = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, idProduto);
+
+            ResultSet rs = stmt.executeQuery();
+
+            // Verifica se há resultados
+            if (rs.next()) {
+                produto.setIdProduto(rs.getInt("idProduto"));
+                produto.setNomeProduto(rs.getString("Nome_Produto"));
+                produto.setDescricao(rs.getString("Descricao"));
+                produto.setQtdEstoque(rs.getInt("Qtd_estoque"));
+                produto.setFabricacao(rs.getString("Fabricante"));
+                produto.setValorUnitario(rs.getDouble("Valor_unitario"));
+            } else {
+                // Se não houver resultados, define o ID do produto como 0 para indicar que não foi encontrado
+                produto.setIdProduto(0);
+            }
+
+            // Fechar recursos
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return produto;
+     }    
 }
