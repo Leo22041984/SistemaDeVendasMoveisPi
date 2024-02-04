@@ -4,6 +4,9 @@
  */
 package Telas;
 
+import Sistema.Produto;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author PC
@@ -43,6 +46,8 @@ public class TelaProduto extends javax.swing.JFrame {
         btnLimpar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
+        lbnIdProduto = new javax.swing.JLabel();
+        txtIdProduto = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -104,29 +109,6 @@ public class TelaProduto extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jSeparator1)
                 .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(lbnNomeProduto)
-                        .addGap(41, 41, 41)
-                        .addComponent(txtNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbnDescProduto)
-                            .addComponent(lbnEstProduto)
-                            .addComponent(lbnFabriProduto)
-                            .addComponent(lbnValProduto))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtDescProduto)
-                            .addComponent(txtFabriProduto)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtEstProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtValProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(37, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,6 +122,34 @@ public class TelaProduto extends javax.swing.JFrame {
                 .addGap(42, 42, 42)
                 .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(55, 55, 55))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(lbnIdProduto)
+                        .addGap(135, 135, 135)
+                        .addComponent(txtIdProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(lbnNomeProduto)
+                            .addGap(41, 41, 41)
+                            .addComponent(txtNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lbnDescProduto)
+                                .addComponent(lbnEstProduto)
+                                .addComponent(lbnFabriProduto)
+                                .addComponent(lbnValProduto))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtDescProduto)
+                                .addComponent(txtFabriProduto)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtEstProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtValProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(0, 0, Short.MAX_VALUE))))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,7 +158,14 @@ public class TelaProduto extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(lbnIdProduto)
+                        .addGap(8, 8, 8))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(txtIdProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbnNomeProduto)
                     .addComponent(txtNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -168,7 +185,7 @@ public class TelaProduto extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbnValProduto)
                     .addComponent(txtValProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCadastrar)
                     .addComponent(btnLimpar)
@@ -193,14 +210,17 @@ public class TelaProduto extends javax.swing.JFrame {
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         // TODO add your handling code here:
+        cadastrarProduto();
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
         // TODO add your handling code here:
+        limparCampos();
     }//GEN-LAST:event_btnLimparActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         // TODO add your handling code here:
+        excluirProduto();
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
@@ -254,12 +274,108 @@ public class TelaProduto extends javax.swing.JFrame {
     private javax.swing.JLabel lbnDescProduto;
     private javax.swing.JLabel lbnEstProduto;
     private javax.swing.JLabel lbnFabriProduto;
+    private javax.swing.JLabel lbnIdProduto;
     private javax.swing.JLabel lbnNomeProduto;
     private javax.swing.JLabel lbnValProduto;
     private javax.swing.JTextField txtDescProduto;
     private javax.swing.JTextField txtEstProduto;
     private javax.swing.JTextField txtFabriProduto;
+    private javax.swing.JTextField txtIdProduto;
     private javax.swing.JTextField txtNomeProduto;
     private javax.swing.JTextField txtValProduto;
     // End of variables declaration//GEN-END:variables
+
+    private void cadastrarProduto() {
+    try {
+        // Validações dos campos
+        if (txtNomeProduto.getText().isEmpty() || txtDescProduto.getText().isEmpty() ||
+            txtFabriProduto.getText().isEmpty() || txtEstProduto.getText().isEmpty() ||
+            txtValProduto.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Preencha todos os campos antes de cadastrar o produto.");
+            return;
+        }
+
+        // Validar se o estoque e valor são números válidos
+        try {
+            int qtdEstoque = Integer.parseInt(txtEstProduto.getText());
+            double valorUnitario = Double.parseDouble(txtValProduto.getText());
+
+            // Verifica se a quantidade de estoque e valor são não negativos
+            if (qtdEstoque < 0 || valorUnitario < 0) {
+                JOptionPane.showMessageDialog(this, "A quantidade de estoque e o valor devem ser não negativos.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "A quantidade de estoque e o valor devem ser números válidos.");
+            return;
+        }
+
+        // Instancia um novo produto e preenche os campos com os dados da tela
+        Produto produto = new Produto();
+        produto.setNomeProduto(txtNomeProduto.getText());
+        produto.setDescricao(txtDescProduto.getText());
+        produto.setFabricacao(txtFabriProduto.getText());
+        produto.setQtdEstoque(Integer.parseInt(txtEstProduto.getText()));
+        produto.setValorUnitario(Double.parseDouble(txtValProduto.getText()));
+
+        // Chama o método de cadastrarProduto da classe Produto
+        produto.cadastrarProduto();
+
+        // Limpa os campos após cadastrar
+        limparCampos();
+
+        JOptionPane.showMessageDialog(this, "Produto cadastrado com sucesso!");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Ocorreu um erro ao cadastrar o produto:\n" + e.getMessage());
+    }
+}
+
+    private void limparCampos() {
+         // Limpa os campos do formulário
+    txtNomeProduto.setText("");
+    txtDescProduto.setText("");
+    txtFabriProduto.setText("");
+    txtEstProduto.setText("");
+    txtValProduto.setText("");
+    }
+
+    private void excluirProduto() {
+    try {
+        // Pede ao usuário para inserir o ID do produto a ser excluído
+        String idInput = JOptionPane.showInputDialog(this, "Informe o ID do produto a ser excluído:");
+
+        // Verifica se o usuário cancelou a entrada ou deixou em branco
+        if (idInput == null || idInput.trim().isEmpty()) {
+            return;  // Saia se o usuário cancelou ou deixou em branco
+        }
+
+        // Obtém o ID do produto a ser excluído
+        int idProduto;
+
+        // Validar se o ID é um número válido
+        try {
+            idProduto = Integer.parseInt(idInput);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "ID do produto deve ser um número válido.");
+            return;
+        }
+
+        // Instancia um novo produto e verifica se o produto com o ID fornecido existe
+        Produto produto = new Produto();
+        if (!produto.verificarExistenciaProduto(idProduto)) {
+            JOptionPane.showMessageDialog(this, "Produto com o ID informado não existe.");
+            return;
+        }
+
+        // Chama o método de excluirProduto
+        produto.excluirProduto(idProduto);
+
+        // Limpa os campos após excluir
+        limparCampos();
+
+        JOptionPane.showMessageDialog(this, "Produto excluído com sucesso!");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Ocorreu um erro ao excluir o produto:\n" + e.getMessage());
+    }
+  }
 }
