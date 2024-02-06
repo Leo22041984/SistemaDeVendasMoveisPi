@@ -9,14 +9,14 @@ package Sistema;
  * @author PC
  */
 public class Cargo {
-    
+
     private int idCargo;
     private String descricaoCargo;
     private Double salarioCargo;
     private int comissao;
-    
+
     public Cargo() {
-        
+
     }
 
     public int getIdCargo() {
@@ -50,6 +50,5 @@ public class Cargo {
     public void setComissao(int comissao) {
         this.comissao = comissao;
     }
-    
-    
+
 }

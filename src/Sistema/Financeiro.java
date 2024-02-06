@@ -11,16 +11,16 @@ import java.util.Date;
  * @author PC
  */
 public class Financeiro {
-    
+
     private int idFinanceiro;
     private int vendaIdVenda;
     private Double valorBruto;
     private Double valorLiquido;
     private Date notaFiscal;
     private int cargoIdCargo;
-    
+
     public Financeiro() {
-        
+
     }
 
     public int getIdFinanceiro() {
@@ -70,6 +70,5 @@ public class Financeiro {
     public void setCargoIdCargo(int cargoIdCargo) {
         this.cargoIdCargo = cargoIdCargo;
     }
-    
-    
+
 }

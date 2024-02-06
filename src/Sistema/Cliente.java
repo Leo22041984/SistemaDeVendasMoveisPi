@@ -8,22 +8,17 @@ import java.util.Date;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 /**
  *
  * @author PC
  */
 public class Cliente {
 
-    
-
     /**
      *
      * @param cpf
      * @return
      */
-    
-    
     private int idCliente;
     private String nome;
     private String endereco;
@@ -34,9 +29,9 @@ public class Cliente {
     private String cidade;
     private String data;
     private String email;
-    
-    public Cliente(){
-        
+
+    public Cliente() {
+
     }
 
     public int getIdCliente() {
@@ -118,8 +113,8 @@ public class Cliente {
     public void setEmail(String email) {
         this.email = email;
     }
-    
-     public static boolean validarNome(String nome) {
+
+    public static boolean validarNome(String nome) {
         return !nome.isEmpty();
     }
 
@@ -162,6 +157,4 @@ public class Cliente {
         return !email.isEmpty() && email.matches("^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$");
     }
 
-   
-    
 }

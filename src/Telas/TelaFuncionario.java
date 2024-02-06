@@ -215,7 +215,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     /**
@@ -243,7 +243,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(TelaFuncionario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-     
+
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

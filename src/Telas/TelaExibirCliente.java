@@ -17,9 +17,9 @@ public class TelaExibirCliente extends javax.swing.JFrame {
     }
 
     private TelaExibirCliente() {
-        
+
     }
-    
+
     private void exibirDadosCliente(Cliente cliente) {
         // Exibir os dados do cliente nos campos correspondentes
         txtNomeCliente.setText(cliente.getNome());

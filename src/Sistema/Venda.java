@@ -11,7 +11,7 @@ import java.util.Date;
  * @author PC
  */
 public class Venda {
-    
+
     private int idVenda;
     private int clienteIdCliente;
     private Date data;
@@ -26,9 +26,9 @@ public class Venda {
     private int qtdProduto;
     private int desconto;
     private Double acrecimo;
-    
+
     public Venda() {
-        
+
     }
 
     public int getIdVenda() {
@@ -142,6 +142,5 @@ public class Venda {
     public void setAcrecimo(Double acrecimo) {
         this.acrecimo = acrecimo;
     }
-    
-    
+
 }

@@ -9,7 +9,7 @@ package Sistema;
  * @author PC
  */
 public class Funcionario {
-    
+
     private int idFuncionario;
     private String nomeFuncionario;
     private String endereco;
@@ -17,9 +17,9 @@ public class Funcionario {
     private String telefone;
     private int usuarioIdUsuario;
     private int cargoIdCargo;
-    
+
     public Funcionario() {
-        
+
     }
 
     public int getIdFuncionario() {
@@ -77,6 +77,5 @@ public class Funcionario {
     public void setCargoIdCargo(int cargoIdCargo) {
         this.cargoIdCargo = cargoIdCargo;
     }
-    
-    
+
 }

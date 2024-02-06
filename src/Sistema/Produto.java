@@ -15,16 +15,16 @@ import java.sql.ResultSet;
  * @author PC
  */
 public class Produto {
-    
+
     private int idProduto;
     private String nomeProduto;
     private String descricao;
     private int qtdEstoque;
     private String fabricacao;
     private Double valorUnitario;
-    
+
     public Produto() {
-        
+
     }
 
     public int getIdProduto() {
@@ -74,11 +74,11 @@ public class Produto {
     public void setValorUnitario(Double valorUnitario) {
         this.valorUnitario = valorUnitario;
     }
-    
+
     // Métodos para manipulação do banco de dados
     public void cadastrarProduto() {
         try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Sistema_de_venda_moveis_db_PI","root", "227442");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Sistema_de_venda_moveis_db_PI", "root", "227442");
             String sql = "INSERT INTO produto (Nome_Produto, Descricao, Qtd_estoque, Fabricante, Valor_unitario) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(sql);
 
@@ -111,7 +111,7 @@ public class Produto {
     // Método para excluir um produto
     public void excluirProduto(int idProduto) {
         try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Sistema_de_venda_moveis_db_PI","root", "227442");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Sistema_de_venda_moveis_db_PI", "root", "227442");
             String sql = "DELETE FROM produto WHERE idProduto = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, idProduto);
@@ -127,28 +127,29 @@ public class Produto {
     }
 
     public boolean verificarExistenciaProduto(int idProduto) {
-    try {
-        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Sistema_de_venda_moveis_db_PI","root", "227442");
-        String sql = "SELECT COUNT(*) FROM produto WHERE idProduto = ?";
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setInt(1, idProduto);
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Sistema_de_venda_moveis_db_PI", "root", "227442");
+            String sql = "SELECT COUNT(*) FROM produto WHERE idProduto = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, idProduto);
 
-        ResultSet rs = stmt.executeQuery();
-        rs.next();
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
 
-        int count = rs.getInt(1);
+            int count = rs.getInt(1);
 
-        // Se o count for maior que 0, o produto existe
-        return count > 0;
-    } catch (SQLException e) {
-        e.printStackTrace();
-        return false; // Em caso de erro, assume-se que o produto não existe
+            // Se o count for maior que 0, o produto existe
+            return count > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Em caso de erro, assume-se que o produto não existe
+        }
     }
-}
-     public Produto consultarProduto(int idProduto) {
+
+    public Produto consultarProduto(int idProduto) {
         Produto produto = new Produto();
         try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Sistema_de_venda_moveis_db_PI","root", "227442");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Sistema_de_venda_moveis_db_PI", "root", "227442");
             String sql = "SELECT * FROM produto WHERE idProduto = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, idProduto);
@@ -177,5 +178,5 @@ public class Produto {
         }
 
         return produto;
-     }    
+    }
 }

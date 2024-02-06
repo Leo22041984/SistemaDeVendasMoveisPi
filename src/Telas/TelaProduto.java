@@ -311,99 +311,100 @@ public class TelaProduto extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void cadastrarProduto() {
-    try {
-        // Validações dos campos
-        if (txtNomeProduto.getText().isEmpty() || txtDescProduto.getText().isEmpty() ||
-            txtFabriProduto.getText().isEmpty() || txtEstProduto.getText().isEmpty() ||
-            txtValProduto.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Preencha todos os campos antes de cadastrar o produto.");
-            return;
-        }
-
-        // Validar se o estoque e valor são números válidos
         try {
-            int qtdEstoque = Integer.parseInt(txtEstProduto.getText());
-            double valorUnitario = Double.parseDouble(txtValProduto.getText());
-
-            // Verifica se a quantidade de estoque e valor são não negativos
-            if (qtdEstoque < 0 || valorUnitario < 0) {
-                JOptionPane.showMessageDialog(this, "A quantidade de estoque e o valor devem ser não negativos.");
+            // Validações dos campos
+            if (txtNomeProduto.getText().isEmpty() || txtDescProduto.getText().isEmpty()
+                    || txtFabriProduto.getText().isEmpty() || txtEstProduto.getText().isEmpty()
+                    || txtValProduto.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Preencha todos os campos antes de cadastrar o produto.");
                 return;
             }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "A quantidade de estoque e o valor devem ser números válidos.");
-            return;
+
+            // Validar se o estoque e valor são números válidos
+            try {
+                int qtdEstoque = Integer.parseInt(txtEstProduto.getText());
+                double valorUnitario = Double.parseDouble(txtValProduto.getText());
+
+                // Verifica se a quantidade de estoque e valor são não negativos
+                if (qtdEstoque < 0 || valorUnitario < 0) {
+                    JOptionPane.showMessageDialog(this, "A quantidade de estoque e o valor devem ser não negativos.");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "A quantidade de estoque e o valor devem ser números válidos.");
+                return;
+            }
+
+            // Instancia um novo produto e preenche os campos com os dados da tela
+            Produto produto = new Produto();
+            produto.setNomeProduto(txtNomeProduto.getText());
+            produto.setDescricao(txtDescProduto.getText());
+            produto.setFabricacao(txtFabriProduto.getText());
+            produto.setQtdEstoque(Integer.parseInt(txtEstProduto.getText()));
+            produto.setValorUnitario(Double.parseDouble(txtValProduto.getText()));
+
+            // Chama o método de cadastrarProduto da classe Produto
+            produto.cadastrarProduto();
+
+            // Limpa os campos após cadastrar
+            limparCampos();
+
+            JOptionPane.showMessageDialog(this, "Produto cadastrado com sucesso!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Ocorreu um erro ao cadastrar o produto:\n" + e.getMessage());
         }
-
-        // Instancia um novo produto e preenche os campos com os dados da tela
-        Produto produto = new Produto();
-        produto.setNomeProduto(txtNomeProduto.getText());
-        produto.setDescricao(txtDescProduto.getText());
-        produto.setFabricacao(txtFabriProduto.getText());
-        produto.setQtdEstoque(Integer.parseInt(txtEstProduto.getText()));
-        produto.setValorUnitario(Double.parseDouble(txtValProduto.getText()));
-
-        // Chama o método de cadastrarProduto da classe Produto
-        produto.cadastrarProduto();
-
-        // Limpa os campos após cadastrar
-        limparCampos();
-
-        JOptionPane.showMessageDialog(this, "Produto cadastrado com sucesso!");
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Ocorreu um erro ao cadastrar o produto:\n" + e.getMessage());
     }
-}
 
     private void limparCampos() {
-         // Limpa os campos do formulário
-    txtNomeProduto.setText("");
-    txtDescProduto.setText("");
-    txtFabriProduto.setText("");
-    txtEstProduto.setText("");
-    txtValProduto.setText("");
+        // Limpa os campos do formulário
+        txtNomeProduto.setText("");
+        txtDescProduto.setText("");
+        txtFabriProduto.setText("");
+        txtEstProduto.setText("");
+        txtValProduto.setText("");
     }
 
     private void excluirProduto() {
-    try {
-        // Pede ao usuário para inserir o ID do produto a ser excluído
-        String idInput = JOptionPane.showInputDialog(this, "Informe o ID do produto a ser excluído:");
-
-        // Verifica se o usuário cancelou a entrada ou deixou em branco
-        if (idInput == null || idInput.trim().isEmpty()) {
-            return;  // Saia se o usuário cancelou ou deixou em branco
-        }
-
-        // Obtém o ID do produto a ser excluído
-        int idProduto;
-
-        // Validar se o ID é um número válido
         try {
-            idProduto = Integer.parseInt(idInput);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "ID do produto deve ser um número válido.");
-            return;
+            // Pede ao usuário para inserir o ID do produto a ser excluído
+            String idInput = JOptionPane.showInputDialog(this, "Informe o ID do produto a ser excluído:");
+
+            // Verifica se o usuário cancelou a entrada ou deixou em branco
+            if (idInput == null || idInput.trim().isEmpty()) {
+                return;  // Saia se o usuário cancelou ou deixou em branco
+            }
+
+            // Obtém o ID do produto a ser excluído
+            int idProduto;
+
+            // Validar se o ID é um número válido
+            try {
+                idProduto = Integer.parseInt(idInput);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "ID do produto deve ser um número válido.");
+                return;
+            }
+
+            // Instancia um novo produto e verifica se o produto com o ID fornecido existe
+            Produto produto = new Produto();
+            if (!produto.verificarExistenciaProduto(idProduto)) {
+                JOptionPane.showMessageDialog(this, "Produto com o ID informado não existe.");
+                return;
+            }
+
+            // Chama o método de excluirProduto
+            produto.excluirProduto(idProduto);
+
+            // Limpa os campos após excluir
+            limparCampos();
+
+            JOptionPane.showMessageDialog(this, "Produto excluído com sucesso!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Ocorreu um erro ao excluir o produto:\n" + e.getMessage());
         }
-
-        // Instancia um novo produto e verifica se o produto com o ID fornecido existe
-        Produto produto = new Produto();
-        if (!produto.verificarExistenciaProduto(idProduto)) {
-            JOptionPane.showMessageDialog(this, "Produto com o ID informado não existe.");
-            return;
-        }
-
-        // Chama o método de excluirProduto
-        produto.excluirProduto(idProduto);
-
-        // Limpa os campos após excluir
-        limparCampos();
-
-        JOptionPane.showMessageDialog(this, "Produto excluído com sucesso!");
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Ocorreu um erro ao excluir o produto:\n" + e.getMessage());
     }
-  }
-  private void consultarProduto() {
+
+    private void consultarProduto() {
         try {
             // Pede ao usuário para inserir o ID do produto a ser consultado
             String idInput = JOptionPane.showInputDialog(this, "Informe o ID do produto a ser consultado:");
@@ -449,6 +450,5 @@ public class TelaProduto extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Ocorreu um erro ao consultar o produto:\n" + e.getMessage());
         }
     }
-  
 
 }

@@ -177,44 +177,44 @@ public class TelaUsuario extends javax.swing.JFrame {
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         // TODO add your handling code here:
         Usuario usuario = new Usuario();
-    usuario.setLogin(txtLogin.getText());
-    usuario.setSenha(txtSenha.getText());
+        usuario.setLogin(txtLogin.getText());
+        usuario.setSenha(txtSenha.getText());
 
-    if (usuario.salvar()) {
-        // Limpar campos ou realizar outras ações após o cadastro bem-sucedido
-        txtLogin.setText("");
-        txtSenha.setText("");
-      }
+        if (usuario.salvar()) {
+            // Limpar campos ou realizar outras ações após o cadastro bem-sucedido
+            txtLogin.setText("");
+            txtSenha.setText("");
+        }
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
         // TODO add your handling code here:
-        
+
         txtLogin.setText("");
         txtSenha.setText("");
-    
+
     }//GEN-LAST:event_btnLimparActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         // TODO add your handling code here:
-         // Pergunta ao usuário o ID do usuário a ser excluído
-    String idUsuarioStr = JOptionPane.showInputDialog("Digite o ID do usuário a ser excluído:");
-    
-    if (idUsuarioStr != null && !idUsuarioStr.isEmpty()) {
-        try {
-            int idUsuario = Integer.parseInt(idUsuarioStr);
-            
-            Usuario usuario = new Usuario();
-            if (usuario.excluirUsuario(idUsuario)) {
-                // Limpar campos ou realizar outras ações após a exclusão bem-sucedida
-                txtLogin.setText("");
-                txtSenha.setText("");
+        // Pergunta ao usuário o ID do usuário a ser excluído
+        String idUsuarioStr = JOptionPane.showInputDialog("Digite o ID do usuário a ser excluído:");
+
+        if (idUsuarioStr != null && !idUsuarioStr.isEmpty()) {
+            try {
+                int idUsuario = Integer.parseInt(idUsuarioStr);
+
+                Usuario usuario = new Usuario();
+                if (usuario.excluirUsuario(idUsuario)) {
+                    // Limpar campos ou realizar outras ações após a exclusão bem-sucedida
+                    txtLogin.setText("");
+                    txtSenha.setText("");
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Digite um ID de usuário válido.", "Erro", JOptionPane.ERROR_MESSAGE);
             }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Digite um ID de usuário válido.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
-      }
-       
+
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
@@ -224,23 +224,23 @@ public class TelaUsuario extends javax.swing.JFrame {
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         // TODO add your handling code here:
-         // Pergunta ao usuário o ID do usuário a ser consultado
-    String idUsuarioStr = JOptionPane.showInputDialog("Digite o ID do usuário a ser consultado:");
+        // Pergunta ao usuário o ID do usuário a ser consultado
+        String idUsuarioStr = JOptionPane.showInputDialog("Digite o ID do usuário a ser consultado:");
 
-    if (idUsuarioStr != null && !idUsuarioStr.isEmpty()) {
-        try {
-            int idUsuario = Integer.parseInt(idUsuarioStr);
+        if (idUsuarioStr != null && !idUsuarioStr.isEmpty()) {
+            try {
+                int idUsuario = Integer.parseInt(idUsuarioStr);
 
-            Usuario usuario = new Usuario();
-            if (usuario.consultarUsuario(idUsuario)) {
-                // Preencher as informações na interface gráfica
-                txtLogin.setText(usuario.getLogin());
-                txtSenha.setText(usuario.getSenha());
+                Usuario usuario = new Usuario();
+                if (usuario.consultarUsuario(idUsuario)) {
+                    // Preencher as informações na interface gráfica
+                    txtLogin.setText(usuario.getLogin());
+                    txtSenha.setText(usuario.getSenha());
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Digite um ID de usuário válido.", "Erro", JOptionPane.ERROR_MESSAGE);
             }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Digite um ID de usuário válido.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
-      }
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     /**
