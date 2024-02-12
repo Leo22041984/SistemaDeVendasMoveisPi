@@ -39,7 +39,7 @@
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-            <LineBorder roundedCorners="true" thickness="2"/>
+            <LineBorder roundedCorners="true" thickness="5"/>
           </Border>
         </Property>
       </Properties>
@@ -78,10 +78,12 @@
                                   <Component id="txtDescProduto" max="32767" attributes="0"/>
                                   <Component id="txtFabriProduto" max="32767" attributes="0"/>
                                   <Group type="102" attributes="0">
-                                      <Component id="txtEstProduto" min="-2" pref="93" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="txtEstProduto" min="-2" pref="93" max="-2" attributes="0"/>
+                                          <Component id="txtValProduto" alignment="0" min="-2" pref="93" max="-2" attributes="0"/>
+                                      </Group>
                                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   </Group>
-                                  <Component id="txtValProduto" alignment="0" min="-2" pref="93" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" attributes="0">
@@ -106,7 +108,7 @@
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace pref="34" max="32767" attributes="0"/>
+                  <EmptySpace pref="28" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -152,7 +154,7 @@
                       <Component id="lbnValProduto" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtValProduto" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="40" max="32767" attributes="0"/>
+                  <EmptySpace pref="34" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnCadastrar" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnLimpar" alignment="3" min="-2" max="-2" attributes="0"/>

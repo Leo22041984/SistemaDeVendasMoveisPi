@@ -49,7 +49,7 @@ public class TelaInicialSistema extends javax.swing.JFrame {
         setUndecorated(true);
         setResizable(false);
 
-        jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+        jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 5, true));
 
         jLabel1.setFont(new java.awt.Font("Lucida Sans", 1, 36)); // NOI18N
         jLabel1.setText("Sistema Móveis Connect");

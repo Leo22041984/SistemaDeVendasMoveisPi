@@ -46,7 +46,7 @@ public class TelaUsuario extends javax.swing.JFrame {
         setUndecorated(true);
         setResizable(false);
 
-        jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 51, 51), 2, true));
+        jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 5, true));
 
         btnSair.setFont(new java.awt.Font("Lucida Sans", 1, 12)); // NOI18N
         btnSair.setText("Sair");

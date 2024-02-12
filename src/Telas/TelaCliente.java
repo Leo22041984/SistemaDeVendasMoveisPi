@@ -15,13 +15,14 @@ import javax.swing.JOptionPane;
 public class TelaCliente extends javax.swing.JFrame {
 
     private final SistemaDAO dao;
+
     /**
      * Creates new form TelaCliente
      */
-    
+
     public TelaCliente() {
         initComponents();
-         dao = new SistemaDAO();
+        dao = new SistemaDAO();
     }
 
     /**
@@ -64,7 +65,7 @@ public class TelaCliente extends javax.swing.JFrame {
         setUndecorated(true);
         setResizable(false);
 
-        jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+        jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 5, true));
 
         jLabel1.setFont(new java.awt.Font("Lucida Sans", 1, 18)); // NOI18N
         jLabel1.setText("Cadastro de Clientes");
@@ -195,7 +196,7 @@ public class TelaCliente extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 251, Short.MAX_VALUE)
+                .addGap(0, 245, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(253, 253, 253))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -293,7 +294,7 @@ public class TelaCliente extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
                     .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCadastrar)
                     .addComponent(btnSair)
@@ -320,95 +321,94 @@ public class TelaCliente extends javax.swing.JFrame {
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         // TODO add your handling code here:
-         Cliente cl = new Cliente();
-    SistemaDAO dao = new SistemaDAO();
-    boolean status;
-    int resposta;
+        Cliente cl = new Cliente();
+        SistemaDAO dao = new SistemaDAO();
+        boolean status;
+        int resposta;
 
-    cl.setIdCliente(0);
-    cl.setNome(txtNomeCliente.getText());
-    cl.setEndereco(txtEndereco.getText());
-    cl.setTelefone(txtTelefone.getText());
-    cl.setCpf(txtCpf.getText());
-    cl.setRg(txtRg.getText());
-    cl.setUf(txtUf.getText());
-    cl.setCidade(txtCidade.getText());
-    cl.setData(txtDataNascimento.getText());
-    cl.setEmail(txtEmail.getText());
+        cl.setIdCliente(0);
+        cl.setNome(txtNomeCliente.getText());
+        cl.setEndereco(txtEndereco.getText());
+        cl.setTelefone(txtTelefone.getText());
+        cl.setCpf(txtCpf.getText());
+        cl.setRg(txtRg.getText());
+        cl.setUf(txtUf.getText());
+        cl.setCidade(txtCidade.getText());
+        cl.setData(txtDataNascimento.getText());
+        cl.setEmail(txtEmail.getText());
 
-    // Adicionando validações
-    if (!Cliente.validarNome(cl.getNome())) {
-        JOptionPane.showMessageDialog(null, "Por favor, insira o nome do Cliente.");
-        return;
-    }
-
-    if (!Cliente.validarData(cl.getData())) {
-        JOptionPane.showMessageDialog(null, "Por favor, insira uma data válida no formato ddMMyyyy.");
-        return;
-    }
-
-    if (!Cliente.validarEndereco(cl.getEndereco())) {
-        JOptionPane.showMessageDialog(null, "Por favor, insira o Endereço do Cliente.");
-        return;
-    }
-
-    if (!Cliente.validarTelefone(cl.getTelefone())) {
-        JOptionPane.showMessageDialog(null, "Por favor, insira o Telefone do Cliente.");
-        return;
-    }
-
-    if (!Cliente.validarCpf(cl.getCpf())) {
-        JOptionPane.showMessageDialog(null, "Por favor, insira um CPF válido.");
-        return;
-    }
-
-    if (!Cliente.validarRg(cl.getRg())) {
-        JOptionPane.showMessageDialog(null, "Por favor, insira o RG do Cliente.");
-        return;
-    }
-
-    if (!Cliente.validarUf(cl.getUf())) {
-        JOptionPane.showMessageDialog(null, "Por favor, insira a UF do Cliente.");
-        return;
-    }
-
-    if (!Cliente.validarCidade(cl.getCidade())) {
-        JOptionPane.showMessageDialog(null, "Por favor, insira a Cidade do Cliente.");
-        return;
-    }
-
-    if (!Cliente.validarEmail(cl.getEmail())) {
-        JOptionPane.showMessageDialog(null, "Por favor, insira um Email válido.");
-        return;
-    }
-
-    status = dao.conectar();
-    if (status == false) {
-        JOptionPane.showMessageDialog(null, "Erro de conexão");
-    } else {
-        resposta = dao.Salvar(cl);
-        if (resposta == 1) {
-            JOptionPane.showMessageDialog(null, "Dados incluídos com sucesso");
-
-            txtNomeCliente.setText("");
-            txtEndereco.setText("");
-            txtTelefone.setText("");
-            txtCpf.setText("");
-            txtRg.setText("");
-            txtUf.setText("");
-            txtCidade.setText("");
-            txtDataNascimento.setText("");
-            txtEmail.setText("");
-        } else if (resposta == 1062) {
-            JOptionPane.showMessageDialog(null, "Cliente já foi cadastrado.");
-        } else {
-            JOptionPane.showMessageDialog(null, "Erro ao tentar inserir dados.");
+        // Adicionando validações
+        if (!Cliente.validarNome(cl.getNome())) {
+            JOptionPane.showMessageDialog(null, "Por favor, insira o nome do Cliente.");
+            return;
         }
-        dao.desconectar();
-    }
 
-        
-        
+        if (!Cliente.validarData(cl.getData())) {
+            JOptionPane.showMessageDialog(null, "Por favor, insira uma data válida no formato ddMMyyyy.");
+            return;
+        }
+
+        if (!Cliente.validarEndereco(cl.getEndereco())) {
+            JOptionPane.showMessageDialog(null, "Por favor, insira o Endereço do Cliente.");
+            return;
+        }
+
+        if (!Cliente.validarTelefone(cl.getTelefone())) {
+            JOptionPane.showMessageDialog(null, "Por favor, insira o Telefone do Cliente.");
+            return;
+        }
+
+        if (!Cliente.validarCpf(cl.getCpf())) {
+            JOptionPane.showMessageDialog(null, "Por favor, insira um CPF válido.");
+            return;
+        }
+
+        if (!Cliente.validarRg(cl.getRg())) {
+            JOptionPane.showMessageDialog(null, "Por favor, insira o RG do Cliente.");
+            return;
+        }
+
+        if (!Cliente.validarUf(cl.getUf())) {
+            JOptionPane.showMessageDialog(null, "Por favor, insira a UF do Cliente.");
+            return;
+        }
+
+        if (!Cliente.validarCidade(cl.getCidade())) {
+            JOptionPane.showMessageDialog(null, "Por favor, insira a Cidade do Cliente.");
+            return;
+        }
+
+        if (!Cliente.validarEmail(cl.getEmail())) {
+            JOptionPane.showMessageDialog(null, "Por favor, insira um Email válido.");
+            return;
+        }
+
+        status = dao.conectar();
+        if (status == false) {
+            JOptionPane.showMessageDialog(null, "Erro de conexão");
+        } else {
+            resposta = dao.Salvar(cl);
+            if (resposta == 1) {
+                JOptionPane.showMessageDialog(null, "Dados incluídos com sucesso");
+
+                txtNomeCliente.setText("");
+                txtEndereco.setText("");
+                txtTelefone.setText("");
+                txtCpf.setText("");
+                txtRg.setText("");
+                txtUf.setText("");
+                txtCidade.setText("");
+                txtDataNascimento.setText("");
+                txtEmail.setText("");
+            } else if (resposta == 1062) {
+                JOptionPane.showMessageDialog(null, "Cliente já foi cadastrado.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Erro ao tentar inserir dados.");
+            }
+            dao.desconectar();
+        }
+
+
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void conectarAoBanco() {
@@ -417,19 +417,19 @@ public class TelaCliente extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Erro de conexão.");
         }
     }
-    
+
     private void consultarClientePorId() {
         try {
             String idConsulta = JOptionPane.showInputDialog("Digite o ID do Cliente para consultar:");
-                if (idConsulta != null && !idConsulta.isEmpty()) {
-                    int idCliente = Integer.parseInt(idConsulta);
-                
-                    Cliente cliente = dao.consultarClientePorId(idCliente);
+            if (idConsulta != null && !idConsulta.isEmpty()) {
+                int idCliente = Integer.parseInt(idConsulta);
+
+                Cliente cliente = dao.consultarClientePorId(idCliente);
 
                 if (cliente != null) {
-                   
-                     TelaExibirCliente telaExibirCliente = new TelaExibirCliente(cliente);
-                telaExibirCliente.setVisible(true);
+
+                    TelaExibirCliente telaExibirCliente = new TelaExibirCliente(cliente);
+                    telaExibirCliente.setVisible(true);
                 } else {
                     JOptionPane.showMessageDialog(null, "Cliente não encontrado.");
                 }
@@ -464,7 +464,6 @@ public class TelaCliente extends javax.swing.JFrame {
         }
     }
 
-
     private void preencherCampos(Cliente cliente) {
         txtNomeCliente.setText(cliente.getNome());
         txtEndereco.setText(cliente.getEndereco());
@@ -477,21 +476,19 @@ public class TelaCliente extends javax.swing.JFrame {
         txtEmail.setText(cliente.getEmail());
     }
 
-        
+    private void limparCampos() {
+        txtNomeCliente.setText("");
+        txtEndereco.setText("");
+        txtTelefone.setText("");
+        txtCpf.setText("");
+        txtRg.setText("");
+        txtUf.setText("");
+        txtCidade.setText("");
+        txtDataNascimento.setText("");
+        txtEmail.setText("");
+    }
 
-private void limparCampos() {
-    txtNomeCliente.setText("");
-    txtEndereco.setText("");
-    txtTelefone.setText("");
-    txtCpf.setText("");
-    txtRg.setText("");
-    txtUf.setText("");
-    txtCidade.setText("");
-    txtDataNascimento.setText("");
-    txtEmail.setText("");
-}
-    
-    
+
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
         // TODO add your handling code here:
         dispose();
@@ -614,4 +611,3 @@ private void limparCampos() {
     private javax.swing.JTextField txtUf;
     // End of variables declaration//GEN-END:variables
 }
-
