@@ -21,45 +21,84 @@ public class Usuario {
     private String login;
     private String senha;
 
+    /**
+     *
+     */
     public Usuario() {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public int getIdUsuario() {
         return idUsuario;
     }
 
+    /**
+     *
+     * @param idUsuario
+     */
     public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getLogin() {
         return login;
     }
 
+    /**
+     *
+     * @param login
+     */
     public void setLogin(String login) {
         this.login = login;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getSenha() {
         return senha;
     }
 
+    /**
+     *
+     * @param senha
+     */
     public void setSenha(String senha) {
         this.senha = senha;
     }
 
+    /**
+     *
+     */
     public class ConexaoBD {
 
         private static final String URL = "jdbc:mysql://localhost:3306/Sistema_de_venda_moveis_db_PI";
         private static final String USUARIO = "root";
         private static final String SENHA = "227442";
 
+        /**
+         *
+         * @return
+         * @throws SQLException
+         */
         public static Connection obterConexao() throws SQLException {
             return DriverManager.getConnection(URL, USUARIO, SENHA);
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean salvar() {
         if (login == null || senha == null || login.isEmpty() || senha.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Login e senha são obrigatórios.", "Erro", JOptionPane.ERROR_MESSAGE);
@@ -98,6 +137,11 @@ public class Usuario {
         }
     }
 
+    /**
+     *
+     * @param idUsuario
+     * @return
+     */
     public boolean excluirUsuario(int idUsuario) {
         try ( Connection conn = ConexaoBD.obterConexao()) {
             // Verifica se o usuário existe antes de excluir
@@ -130,6 +174,11 @@ public class Usuario {
         }
     }
 
+    /**
+     *
+     * @param idUsuario
+     * @return
+     */
     public boolean consultarUsuario(int idUsuario) {
         try ( Connection conn = ConexaoBD.obterConexao()) {
             String sql = "SELECT * FROM usuario WHERE idUsuario = ?";

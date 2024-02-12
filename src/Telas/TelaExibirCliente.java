@@ -6,10 +6,15 @@ package Telas;
 
 import Sistema.Cliente;
 
+/**
+ *
+ * @author PC
+ */
 public class TelaExibirCliente extends javax.swing.JFrame {
 
     /**
      * Creates new form TelaExibirCliente
+     * @param cliente
      */
     public TelaExibirCliente(Cliente cliente) {
         initComponents();

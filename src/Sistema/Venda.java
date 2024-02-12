@@ -27,118 +27,233 @@ public class Venda {
     private int desconto;
     private Double acrecimo;
 
+    /**
+     *
+     */
     public Venda() {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public int getIdVenda() {
         return idVenda;
     }
 
+    /**
+     *
+     * @param idVenda
+     */
     public void setIdVenda(int idVenda) {
         this.idVenda = idVenda;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getClienteIdCliente() {
         return clienteIdCliente;
     }
 
+    /**
+     *
+     * @param clienteIdCliente
+     */
     public void setClienteIdCliente(int clienteIdCliente) {
         this.clienteIdCliente = clienteIdCliente;
     }
 
+    /**
+     *
+     * @return
+     */
     public Date getData() {
         return data;
     }
 
+    /**
+     *
+     * @param data
+     */
     public void setData(Date data) {
         this.data = data;
     }
 
+    /**
+     *
+     * @return
+     */
     public Date getDataPagamento() {
         return dataPagamento;
     }
 
+    /**
+     *
+     * @param dataPagamento
+     */
     public void setDataPagamento(Date dataPagamento) {
         this.dataPagamento = dataPagamento;
     }
 
+    /**
+     *
+     * @return
+     */
     public Date getDataEnvioProduto() {
         return dataEnvioProduto;
     }
 
+    /**
+     *
+     * @param dataEnvioProduto
+     */
     public void setDataEnvioProduto(Date dataEnvioProduto) {
         this.dataEnvioProduto = dataEnvioProduto;
     }
 
+    /**
+     *
+     * @return
+     */
     public Double getValor() {
         return valor;
     }
 
+    /**
+     *
+     * @param valor
+     */
     public void setValor(Double valor) {
         this.valor = valor;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getTipoPagamento() {
         return tipoPagamento;
     }
 
+    /**
+     *
+     * @param tipoPagamento
+     */
     public void setTipoPagamento(String tipoPagamento) {
         this.tipoPagamento = tipoPagamento;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getDadosCartao() {
         return dadosCartao;
     }
 
+    /**
+     *
+     * @param dadosCartao
+     */
     public void setDadosCartao(String dadosCartao) {
         this.dadosCartao = dadosCartao;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getQtdParcelas() {
         return qtdParcelas;
     }
 
+    /**
+     *
+     * @param qtdParcelas
+     */
     public void setQtdParcelas(int qtdParcelas) {
         this.qtdParcelas = qtdParcelas;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getFuncionarioIdFuncionario() {
         return funcionarioIdFuncionario;
     }
 
+    /**
+     *
+     * @param funcionarioIdFuncionario
+     */
     public void setFuncionarioIdFuncionario(int funcionarioIdFuncionario) {
         this.funcionarioIdFuncionario = funcionarioIdFuncionario;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getProdutoIdProduto() {
         return produtoIdProduto;
     }
 
+    /**
+     *
+     * @param produtoIdProduto
+     */
     public void setProdutoIdProduto(int produtoIdProduto) {
         this.produtoIdProduto = produtoIdProduto;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getQtdProduto() {
         return qtdProduto;
     }
 
+    /**
+     *
+     * @param qtdProduto
+     */
     public void setQtdProduto(int qtdProduto) {
         this.qtdProduto = qtdProduto;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getDesconto() {
         return desconto;
     }
 
+    /**
+     *
+     * @param desconto
+     */
     public void setDesconto(int desconto) {
         this.desconto = desconto;
     }
 
+    /**
+     *
+     * @return
+     */
     public Double getAcrecimo() {
         return acrecimo;
     }
 
+    /**
+     *
+     * @param acrecimo
+     */
     public void setAcrecimo(Double acrecimo) {
         this.acrecimo = acrecimo;
     }

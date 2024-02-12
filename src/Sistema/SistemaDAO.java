@@ -22,6 +22,10 @@ public class SistemaDAO {
 
     PreparedStatement st;
 
+    /**
+     *
+     * @return
+     */
     public boolean conectar() {
         try {
 
@@ -34,6 +38,11 @@ public class SistemaDAO {
         }
     }
 
+    /**
+     *
+     * @param cl
+     * @return
+     */
     public int Salvar(Cliente cl) {
 
         int Status;
@@ -64,6 +73,11 @@ public class SistemaDAO {
         }
     }
 
+    /**
+     *
+     * @param idCliente
+     * @return
+     */
     public Cliente consultarClientePorId(int idCliente) {
         try {
             st = con.prepareStatement("SELECT * FROM Cliente WHERE idCliente = ?");
@@ -84,6 +98,11 @@ public class SistemaDAO {
         }
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     public int excluirClientePorId(int id) {
         try {
             st = con.prepareStatement("DELETE FROM Cliente WHERE idCliente = ?");
@@ -118,6 +137,9 @@ public class SistemaDAO {
         return cliente;
     }
 
+    /**
+     *
+     */
     public void desconectar() {
         try {
             con.close();

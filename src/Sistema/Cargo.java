@@ -23,42 +23,80 @@ public class Cargo {
     private Double salarioCargo;
     private int comissao;
 
+    /**
+     *
+     */
     public Cargo() {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public int getIdCargo() {
         return idCargo;
     }
 
+    /**
+     *
+     * @param idCargo
+     */
     public void setIdCargo(int idCargo) {
         this.idCargo = idCargo;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getDescricaoCargo() {
         return descricaoCargo;
     }
 
+    /**
+     *
+     * @param descricaoCargo
+     */
     public void setDescricaoCargo(String descricaoCargo) {
         this.descricaoCargo = descricaoCargo;
     }
 
+    /**
+     *
+     * @return
+     */
     public Double getSalarioCargo() {
         return salarioCargo;
     }
 
+    /**
+     *
+     * @param salarioCargo
+     */
     public void setSalarioCargo(Double salarioCargo) {
         this.salarioCargo = salarioCargo;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getComissao() {
         return comissao;
     }
 
+    /**
+     *
+     * @param comissao
+     */
     public void setComissao(int comissao) {
         this.comissao = comissao;
     }
 
+    /**
+     *
+     */
     public void cadastrarCargo() {
         try {
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Sistema_de_venda_moveis_db_PI", "root", "227442");
@@ -75,6 +113,10 @@ public class Cargo {
         }
     }
 
+    /**
+     *
+     * @param idCargo
+     */
     public void excluirCargo(int idCargo) {
         try {
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Sistema_de_venda_moveis_db_PI", "root", "227442");
@@ -93,6 +135,13 @@ public class Cargo {
         }
     }
 
+    /**
+     *
+     * @param idCargo
+     * @param txtDescricao
+     * @param txtSalario
+     * @param txtComissao
+     */
     public void consultarCargo(int idCargo, JTextField txtDescricao, JTextField txtSalario, JTextField txtComissao) {
         try {
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Sistema_de_venda_moveis_db_PI", "root", "227442");

@@ -12,6 +12,10 @@ import Sistema.Cliente;
 import Sistema.SistemaDAO;
 import javax.swing.JOptionPane;
 
+/**
+ *
+ * @author PC
+ */
 public class TelaCliente extends javax.swing.JFrame {
 
     private final SistemaDAO dao;

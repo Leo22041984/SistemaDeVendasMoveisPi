@@ -23,59 +23,114 @@ public class Produto {
     private String fabricacao;
     private Double valorUnitario;
 
+    /**
+     *
+     */
     public Produto() {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public int getIdProduto() {
         return idProduto;
     }
 
+    /**
+     *
+     * @param idProduto
+     */
     public void setIdProduto(int idProduto) {
         this.idProduto = idProduto;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getNomeProduto() {
         return nomeProduto;
     }
 
+    /**
+     *
+     * @param nomeProduto
+     */
     public void setNomeProduto(String nomeProduto) {
         this.nomeProduto = nomeProduto;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getDescricao() {
         return descricao;
     }
 
+    /**
+     *
+     * @param descricao
+     */
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getQtdEstoque() {
         return qtdEstoque;
     }
 
+    /**
+     *
+     * @param qtdEstoque
+     */
     public void setQtdEstoque(int qtdEstoque) {
         this.qtdEstoque = qtdEstoque;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getFabricacao() {
         return fabricacao;
     }
 
+    /**
+     *
+     * @param fabricacao
+     */
     public void setFabricacao(String fabricacao) {
         this.fabricacao = fabricacao;
     }
 
+    /**
+     *
+     * @return
+     */
     public Double getValorUnitario() {
         return valorUnitario;
     }
 
+    /**
+     *
+     * @param valorUnitario
+     */
     public void setValorUnitario(Double valorUnitario) {
         this.valorUnitario = valorUnitario;
     }
 
     // Métodos para manipulação do banco de dados
+
+    /**
+     *
+     */
     public void cadastrarProduto() {
         try {
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Sistema_de_venda_moveis_db_PI", "root", "227442");
@@ -99,6 +154,10 @@ public class Produto {
     }
 
     // Método para limpar os campos
+
+    /**
+     *
+     */
     public void limparCampos() {
         setIdProduto(0);
         setNomeProduto("");
@@ -109,6 +168,11 @@ public class Produto {
     }
 
     // Método para excluir um produto
+
+    /**
+     *
+     * @param idProduto
+     */
     public void excluirProduto(int idProduto) {
         try {
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Sistema_de_venda_moveis_db_PI", "root", "227442");
@@ -126,6 +190,11 @@ public class Produto {
         }
     }
 
+    /**
+     *
+     * @param idProduto
+     * @return
+     */
     public boolean verificarExistenciaProduto(int idProduto) {
         try {
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Sistema_de_venda_moveis_db_PI", "root", "227442");
@@ -146,6 +215,11 @@ public class Produto {
         }
     }
 
+    /**
+     *
+     * @param idProduto
+     * @return
+     */
     public Produto consultarProduto(int idProduto) {
         Produto produto = new Produto();
         try {
