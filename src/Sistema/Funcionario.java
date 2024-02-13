@@ -147,6 +147,10 @@ public class Funcionario {
         this.cargoIdCargo = cargoIdCargo;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean conectar() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -158,6 +162,10 @@ public class Funcionario {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean cadastrarFuncionario() {
         try {
             PreparedStatement stmt = con.prepareStatement("SELECT * FROM funcionario WHERE CPF = ?");
@@ -206,6 +214,11 @@ public class Funcionario {
         }
     }
 
+    /**
+     *
+     * @param idFuncionario
+     * @return
+     */
     public boolean excluirFuncionario(int idFuncionario) {
         try {
             PreparedStatement stmt = con.prepareStatement("DELETE FROM funcionario WHERE idFuncionario = ?");
@@ -225,6 +238,11 @@ public class Funcionario {
         }
     }
 
+    /**
+     *
+     * @param idFuncionario
+     * @return
+     */
     public Funcionario consultarFuncionario(int idFuncionario) {
         try {
             PreparedStatement stmt = con.prepareStatement("SELECT * FROM funcionario WHERE idFuncionario = ?");
