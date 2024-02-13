@@ -4,6 +4,9 @@
  */
 package Telas;
 
+import Sistema.Funcionario;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author PC
@@ -45,8 +48,13 @@ public class TelaFuncionario extends javax.swing.JFrame {
         btnExcluir = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
         btnCadastrar = new javax.swing.JButton();
+        btnConsultar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
+        setResizable(false);
+
+        jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 5, true));
 
         jLabel1.setFont(new java.awt.Font("Lucida Sans", 1, 18)); // NOI18N
         jLabel1.setText("Cadastro de Funcionário");
@@ -101,6 +109,14 @@ public class TelaFuncionario extends javax.swing.JFrame {
             }
         });
 
+        btnConsultar.setFont(new java.awt.Font("Lucida Sans", 1, 12)); // NOI18N
+        btnConsultar.setText("Consultar");
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -134,16 +150,20 @@ public class TelaFuncionario extends javax.swing.JFrame {
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(lbnIdCargoFuncionario)
                                         .addGap(35, 35, 35)
-                                        .addComponent(txtIdCargoFuncionario, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 22, Short.MAX_VALUE)))
+                                        .addComponent(txtIdCargoFuncionario, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(0, 12, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(51, 51, 51)
+                        .addComponent(btnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnConsultar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(47, 47, 47)))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -177,12 +197,13 @@ public class TelaFuncionario extends javax.swing.JFrame {
                     .addComponent(txtIdUsuarioFunciorario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbnIdCargoFuncionario)
                     .addComponent(txtIdCargoFuncionario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLimpar)
                     .addComponent(btnExcluir)
                     .addComponent(btnSair)
-                    .addComponent(btnCadastrar))
+                    .addComponent(btnCadastrar)
+                    .addComponent(btnConsultar))
                 .addGap(22, 22, 22))
         );
 
@@ -198,14 +219,43 @@ public class TelaFuncionario extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
         // TODO add your handling code here:
+        limparCampos();
     }//GEN-LAST:event_btnLimparActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         // TODO add your handling code here:
+        try {
+            // Solicita o idFuncionario ao usuário
+            String idFuncionarioStr = JOptionPane.showInputDialog(null, "Digite o ID do funcionário a ser excluído:");
+
+            // Verifica se o usuário cancelou a operação
+            if (idFuncionarioStr == null) {
+                return;
+            }
+
+            // Valida se o idFuncionario é um número válido
+            if (!idFuncionarioStr.matches("\\d+")) {
+                JOptionPane.showMessageDialog(null, "Por favor, insira um número válido para o ID do funcionário.");
+                return;
+            }
+
+            int idFuncionario = Integer.parseInt(idFuncionarioStr);
+
+            // Chama o método para excluir o funcionário
+            Funcionario funcionario = new Funcionario();
+            boolean excluido = funcionario.excluirFuncionario(idFuncionario);
+            if (excluido) {
+                // Limpa os campos após a exclusão
+                limparCampos();
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao converter o ID do funcionário para número: " + ex.getMessage());
+        }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
@@ -215,8 +265,82 @@ public class TelaFuncionario extends javax.swing.JFrame {
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         // TODO add your handling code here:
+        // Verificar se todos os campos estão preenchidos
+        if (txtNomeFuncionario.getText().isEmpty()
+                || txtEndFuncionario.getText().isEmpty()
+                || txtCpfFuncionario.getText().isEmpty()
+                || txtTelFuncionario.getText().isEmpty()
+                || txtIdUsuarioFunciorario.getText().isEmpty()
+                || txtIdCargoFuncionario.getText().isEmpty()) {
+
+            JOptionPane.showMessageDialog(null, "Por favor, preencha todos os campos antes de cadastrar o funcionário.");
+            return; // Encerra o método se algum campo estiver vazio
+        }
+
+        // Caso todos os campos estejam preenchidos, prossegue com o cadastro
+        Funcionario funcionario = new Funcionario();
+        funcionario.setNomeFuncionario(txtNomeFuncionario.getText());
+        funcionario.setEndereco(txtEndFuncionario.getText());
+        funcionario.setCpf(txtCpfFuncionario.getText());
+        funcionario.setTelefone(txtTelFuncionario.getText());
+        funcionario.setUsuarioIdUsuario(Integer.parseInt(txtIdUsuarioFunciorario.getText()));
+        funcionario.setCargoIdCargo(Integer.parseInt(txtIdCargoFuncionario.getText()));
+
+        boolean cadastrado = funcionario.cadastrarFuncionario();
+        if (cadastrado) {
+            JOptionPane.showMessageDialog(null, "Funcionário cadastrado com sucesso.");
+            // Limpar campos
+            limparCampos();
+        } else {
+            JOptionPane.showMessageDialog(null, "Falha ao cadastrar funcionário.");
+        }
 
     }//GEN-LAST:event_btnCadastrarActionPerformed
+
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        // TODO add your handling code here:
+        try {
+            // Solicita o idFuncionario ao usuário
+            String idFuncionarioStr = JOptionPane.showInputDialog(null, "Digite o ID do funcionário:");
+
+            // Verifica se o usuário cancelou a operação
+            if (idFuncionarioStr == null) {
+                return;
+            }
+
+            // Valida se o idFuncionario é um número válido
+            if (!idFuncionarioStr.matches("\\d+")) {
+                JOptionPane.showMessageDialog(null, "Por favor, insira um número válido para o ID do funcionário.");
+                return;
+            }
+
+            int idFuncionario = Integer.parseInt(idFuncionarioStr);
+
+            // Chama o método para consultar o funcionário
+            Funcionario funcionario = new Funcionario();
+            Funcionario funcionarioConsultado = funcionario.consultarFuncionario(idFuncionario);
+            if (funcionarioConsultado != null) {
+                // Exibe as informações na tela
+                txtNomeFuncionario.setText(funcionarioConsultado.getNomeFuncionario());
+                txtEndFuncionario.setText(funcionarioConsultado.getEndereco());
+                txtCpfFuncionario.setText(funcionarioConsultado.getCpf());
+                txtTelFuncionario.setText(funcionarioConsultado.getTelefone());
+                txtIdUsuarioFunciorario.setText(String.valueOf(funcionarioConsultado.getUsuarioIdUsuario()));
+                txtIdCargoFuncionario.setText(String.valueOf(funcionarioConsultado.getCargoIdCargo()));
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao converter o ID do funcionário para número: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_btnConsultarActionPerformed
+
+    private void limparCampos() {
+        txtNomeFuncionario.setText("");
+        txtEndFuncionario.setText("");
+        txtCpfFuncionario.setText("");
+        txtTelFuncionario.setText("");
+        txtIdUsuarioFunciorario.setText("");
+        txtIdCargoFuncionario.setText("");
+    }
 
     /**
      * @param args the command line arguments
@@ -255,6 +379,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCadastrar;
+    private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnSair;
