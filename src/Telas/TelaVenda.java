@@ -12,6 +12,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import java.sql.ResultSet;
 
 /**
  *
@@ -31,6 +32,11 @@ public class TelaVenda extends javax.swing.JFrame {
         txtIdFunc.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtIdFuncKeyPressed(evt);
+            }
+        });
+        txtIdCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtIdClienteKeyPressed(evt);
             }
         });
     }
@@ -66,6 +72,48 @@ public class TelaVenda extends javax.swing.JFrame {
                 txtFunc.setText(""); // Limpa o campo txtFunc se o funcionário não for encontrado
             }
         }
+    }
+
+    private void txtIdClienteKeyPressed(KeyEvent evt) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            int idCliente;
+            try {
+                idCliente = Integer.parseInt(txtIdCliente.getText());
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Por favor, insira um ID de cliente válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            String nomeCliente = consultarNome(idCliente);
+            if (nomeCliente != null) {
+                txtCliente.setText(nomeCliente);
+            } else {
+                JOptionPane.showMessageDialog(this, "Cliente não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
+                txtCliente.setText(""); // Limpa o campo txtCliente se o cliente não for encontrado
+            }
+        }
+    }
+
+    private String consultarNome(int idCliente) {
+        String nomeCliente = null;
+        try {
+            if (conectar()) {
+                String sql = "SELECT Nome FROM Cliente WHERE idCliente = ?";
+                PreparedStatement stmt = con.prepareStatement(sql);
+                stmt.setInt(1, idCliente);
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    nomeCliente = rs.getString("Nome");
+                }
+                rs.close();
+                stmt.close();
+            } else {
+                JOptionPane.showMessageDialog(this, "Erro ao conectar ao banco de dados.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Erro ao consultar o banco de dados: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        return nomeCliente;
     }
 
     /**
