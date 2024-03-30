@@ -4,6 +4,15 @@
  */
 package Telas;
 
+import Sistema.Venda;
+import Sistema.Funcionario;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author PC
@@ -13,8 +22,50 @@ public class TelaVenda extends javax.swing.JFrame {
     /**
      * Creates new form TelaVenda
      */
+    private Funcionario funcionario;
+    private Connection con;
+
     public TelaVenda() {
         initComponents();
+        funcionario = new Funcionario();
+        txtIdFunc.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtIdFuncKeyPressed(evt);
+            }
+        });
+    }
+
+    // Método para conectar ao banco de dados
+    public boolean conectar() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Sistema_de_venda_moveis_db_PI", "root", "227442");
+            return true;
+        } catch (ClassNotFoundException | SQLException ex) {
+            System.out.println("Erro ao conectar: " + ex.getMessage());
+            return false;
+        }
+    }
+    // Método para lidar com o evento de pressionar Enter no campo txtIdFuncionario
+
+    private void txtIdFuncKeyPressed(KeyEvent evt) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            int idFuncionario;
+            try {
+                idFuncionario = Integer.parseInt(txtIdFunc.getText());
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Por favor, insira um ID de funcionário válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            Funcionario funcionarioEncontrado = funcionario.consultarFuncionario(idFuncionario);
+            if (funcionarioEncontrado != null) {
+                txtFunc.setText(funcionarioEncontrado.getNomeFuncionario());
+            } else {
+                JOptionPane.showMessageDialog(this, "Funcionário não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
+                txtFunc.setText(""); // Limpa o campo txtFunc se o funcionário não for encontrado
+            }
+        }
     }
 
     /**
@@ -338,11 +389,57 @@ public class TelaVenda extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEfetivarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEfetivarActionPerformed
-        // TODO add your handling code here:
+        // Validação dos campos obrigatórios
+        if (txtIdCliente.getText().isEmpty() || txtIdProduto.getText().isEmpty()
+                || txtQtdProd.getText().isEmpty() || txtValProd.getText().isEmpty()
+                || txtIdFunc.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Preencha todos os campos obrigatórios.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Criação da instância de Venda
+        Venda venda = new Venda();
+
+        // Preenchimento dos dados da venda
+        venda.setClienteIdCliente(Integer.parseInt(txtIdCliente.getText()));
+        venda.setProdutoIdProduto(Integer.parseInt(txtIdProduto.getText()));
+        venda.setQtdProduto(Integer.parseInt(txtQtdProd.getText()));
+        venda.setValor(Double.parseDouble(txtValProd.getText()));
+        venda.setFuncionarioIdFuncionario(Integer.parseInt(txtIdFunc.getText()));
+
+        // Processamento da venda (envio para o banco de dados)
+        if (inserirVendaNoBanco(venda)) {
+            JOptionPane.showMessageDialog(this, "Venda efetuada com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            limparCampos(); // Limpa os campos após a venda ser efetuada
+        } else {
+            JOptionPane.showMessageDialog(this, "Erro ao efetuar a venda.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    // Método para inserir a venda no banco de dados
+    private boolean inserirVendaNoBanco(Venda venda) {
+        String sql = "INSERT INTO venda (Cliente_idCliente, Data_venda, Valor_venda, Funcionario_idFuncionario, Produto_idProduto, Qtd_Produto) VALUES (?, NOW(), ?, ?, ?, ?)";
+        try {
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, venda.getClienteIdCliente());
+            stmt.setDouble(2, venda.getValor());
+            stmt.setInt(3, venda.getFuncionarioIdFuncionario());
+            stmt.setInt(4, venda.getProdutoIdProduto());
+            stmt.setInt(5, venda.getQtdProduto());
+
+            int rowsAffected = stmt.executeUpdate();
+            stmt.close();
+            return rowsAffected > 0;
+        } catch (SQLException ex) {
+            System.out.println("Erro ao inserir venda: " + ex.getMessage());
+            return false;
+        }
+
+
     }//GEN-LAST:event_btnEfetivarActionPerformed
 
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
-        // TODO add your handling code here:
+        limparCampos();
     }//GEN-LAST:event_btnLimparActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
@@ -353,6 +450,15 @@ public class TelaVenda extends javax.swing.JFrame {
         // TODO add your handling code here:
         dispose();
     }//GEN-LAST:event_btnSairActionPerformed
+    private void limparCampos() {
+        txtIdCliente.setText("");
+        txtCliente.setText("");
+        txtIdProduto.setText("");
+        txtQtdProd.setText("");
+        txtValProd.setText("");
+        txtIdFunc.setText("");
+        txtFunc.setText("");
+    }
 
     /**
      * @param args the command line arguments
