@@ -6,6 +6,8 @@ package Telas;
 
 import Sistema.Venda;
 import Sistema.Funcionario;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -28,11 +30,32 @@ public class TelaVenda extends javax.swing.JFrame {
      */
     private Funcionario funcionario;
     private Connection con;
-
+    
     public TelaVenda() {
         initComponents();
         funcionario = new Funcionario();
 
+        // Adicionando um ouvinte de evento ao ComboBoxTpPag
+        ComboBoxTpPag.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent arg0) {
+
+                // Verificando se o tipo de pagamento selecionado é "Cartão de Crédito"
+                if (ComboBoxTpPag.getSelectedItem().toString().equals("Cartão de Crédito")) {
+
+                    // Tornando os campos txtDadosCartao e txtQtdParc obrigatórios
+                    txtDadosCartao.setEnabled(true);
+                    txtQtdParc.setEnabled(true);
+                } else {
+
+                    // Resetando os campos e tornando-os não obrigatórios
+                    txtDadosCartao.setText("");
+                    txtQtdParc.setText("");
+                    txtDadosCartao.setEnabled(false);
+                    txtQtdParc.setEnabled(false);
+                }
+            }
+        });
+        
         txtIdFunc.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtIdFuncKeyPressed(evt);
@@ -78,7 +101,7 @@ public class TelaVenda extends javax.swing.JFrame {
                 txtAcrecKeyPressed(evt);
             }
         });
-
+        
     }
 
     // Método para conectar ao banco de dados
@@ -103,7 +126,7 @@ public class TelaVenda extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Por favor, insira um ID de funcionário válido.", "Erro", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
+            
             Funcionario funcionarioEncontrado = funcionario.consultarFuncionario(idFuncionario);
             if (funcionarioEncontrado != null) {
                 txtFunc.setText(funcionarioEncontrado.getNomeFuncionario());
@@ -124,7 +147,7 @@ public class TelaVenda extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Por favor, insira um ID de cliente válido.", "Erro", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
+            
             String nomeCliente = consultarNome(idCliente);
             if (nomeCliente != null) {
                 txtCliente.setText(nomeCliente);
@@ -181,7 +204,7 @@ public class TelaVenda extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Por favor, insira um ID de produto válido.", "Erro", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
+            
             String nomeProduto = consultarNomeProduto(idProduto);
             if (nomeProduto != null) {
                 txtProduto.setText(nomeProduto);
@@ -260,9 +283,9 @@ public class TelaVenda extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Preencha todos os campos obrigatórios.", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
+        
         Venda venda = new Venda();
-
+        
         venda.setClienteIdCliente(Integer.parseInt(txtIdCliente.getText()));
         venda.setProdutoIdProduto(Integer.parseInt(txtIdProduto.getText()));
         venda.setQtdProduto(Integer.parseInt(txtQtdProd.getText()));
@@ -279,7 +302,7 @@ public class TelaVenda extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Erro ao converter data.", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
+        
         if (inserirVendaNoBanco(venda)) {
             JOptionPane.showMessageDialog(this, "Venda efetuada com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
             limparCampos();
@@ -290,7 +313,7 @@ public class TelaVenda extends javax.swing.JFrame {
     // Método para inserir os dados da venda no banco de dados após as validações confirmadas
 
     private boolean inserirVendaNoBanco(Venda venda) {
-        String sql = "INSERT INTO venda (Cliente_idCliente, Data_venda, Data_pagamento, Data_envio_produto, Valor_venda, Funcionario_idFuncionario, Produto_idProduto, Qtd_Produto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO venda (Cliente_idCliente, Data_venda, Data_pagamento, Data_envio_produto, Valor_venda, Tipo_pagamento, Dados_Cartao_credito, Qtd_parcelas, Funcionario_idFuncionario, Produto_idProduto, Qtd_Produto) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, venda.getClienteIdCliente());
@@ -298,10 +321,22 @@ public class TelaVenda extends javax.swing.JFrame {
             stmt.setDate(3, new java.sql.Date(venda.getDataPagamento().getTime()));
             stmt.setDate(4, new java.sql.Date(venda.getDataEnvioProduto().getTime()));
             stmt.setDouble(5, venda.getValor());
-            stmt.setInt(6, venda.getFuncionarioIdFuncionario());
-            stmt.setInt(7, venda.getProdutoIdProduto());
-            stmt.setInt(8, venda.getQtdProduto());
 
+            // Defina o tipo de pagamento e os campos relacionados com base na escolha do usuário
+            if (ComboBoxTpPag.getSelectedItem().toString().equals("Cartão de Crédito")) {
+                stmt.setString(6, "C"); // Tipo de pagamento para cartão de crédito
+                stmt.setString(7, txtDadosCartao.getText()); // Dados do cartão de crédito
+                stmt.setInt(8, Integer.parseInt(txtQtdParc.getText())); // Quantidade de parcelas
+            } else {
+                stmt.setString(6, "D"); // Tipo de pagamento para dinheiro
+                stmt.setNull(7, java.sql.Types.VARCHAR); // Dados do cartão de crédito (nulo para pagamento em dinheiro)
+                stmt.setNull(8, java.sql.Types.INTEGER); // Quantidade de parcelas (nulo para pagamento em dinheiro)
+            }
+            
+            stmt.setInt(9, venda.getFuncionarioIdFuncionario());
+            stmt.setInt(10, venda.getProdutoIdProduto());
+            stmt.setInt(11, venda.getQtdProduto());
+            
             int rowsAffected = stmt.executeUpdate();
             stmt.close();
             return rowsAffected > 0;
@@ -310,8 +345,8 @@ public class TelaVenda extends javax.swing.JFrame {
             return false;
         }
     }
-    // Método para consultar nome do cliente em busca no banco de dados
 
+    // Método para consultar nome do cliente em busca no banco de dados
     private String consultarNome(int idCliente) {
         String nomeCliente = null;
         try {
@@ -409,6 +444,10 @@ public class TelaVenda extends javax.swing.JFrame {
         txtDtVenda.setText("");
         txtDtPag.setText("");
         txtDtEnvio.setText("");
+        txtProduto.setText("");
+        txtDesc.setText("");
+        txtDadosCartao.setText("");
+        txtQtdParc.setText("");
     }
 
     /**
@@ -510,7 +549,7 @@ public class TelaVenda extends javax.swing.JFrame {
         lbnTpPag.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         lbnTpPag.setText("Tipo de Pagamento:");
 
-        ComboBoxTpPag.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cartao de Credito", "Cartao de Debito", "Dinheiro", "Boleto" }));
+        ComboBoxTpPag.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cartão de Crédito", "Cartao de Debito", "Dinheiro", "Boleto" }));
 
         lbnDadosCartao.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         lbnDadosCartao.setText("Dados do Cartao:");
@@ -735,7 +774,7 @@ public class TelaVenda extends javax.swing.JFrame {
         // Chamada de método no botão efetivar
 
         efetuarVenda();
-
+        
 
     }//GEN-LAST:event_btnEfetivarActionPerformed
 

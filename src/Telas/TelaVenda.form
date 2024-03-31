@@ -403,7 +403,7 @@
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="4">
-                <StringItem index="0" value="Cartao de Credito"/>
+                <StringItem index="0" value="Cart&#xe3;o de Cr&#xe9;dito"/>
                 <StringItem index="1" value="Cartao de Debito"/>
                 <StringItem index="2" value="Dinheiro"/>
                 <StringItem index="3" value="Boleto"/>
