@@ -13,6 +13,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import java.sql.ResultSet;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -37,6 +40,21 @@ public class TelaVenda extends javax.swing.JFrame {
         txtIdCliente.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtIdClienteKeyPressed(evt);
+            }
+        });
+        txtDtVenda.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtDtVendaKeyPressed(evt);
+            }
+        });
+        txtDtPag.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtDtPagKeyPressed(evt);
+            }
+        });
+        txtDtEnvio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtDtEnvioKeyPressed(evt);
             }
         });
     }
@@ -94,6 +112,108 @@ public class TelaVenda extends javax.swing.JFrame {
         }
     }
 
+    private void txtDtVendaKeyPressed(KeyEvent evt) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (!validarData(txtDtVenda.getText())) {
+                JOptionPane.showMessageDialog(this, "Data de venda inválida. O formato deve ser dd/MM/yyyy.", "Erro", JOptionPane.ERROR_MESSAGE);
+                txtDtVenda.setText("");
+                return;
+            }
+            txtDtPag.requestFocus();
+        }
+    }
+
+    private void txtDtPagKeyPressed(KeyEvent evt) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (!validarData(txtDtPag.getText())) {
+                JOptionPane.showMessageDialog(this, "Data de pagamento inválida. O formato deve ser dd/MM/yyyy.", "Erro", JOptionPane.ERROR_MESSAGE);
+                txtDtPag.setText("");
+                return;
+            }
+            txtDtEnvio.requestFocus();
+        }
+    }
+
+    private void txtDtEnvioKeyPressed(KeyEvent evt) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (!validarData(txtDtEnvio.getText())) {
+                JOptionPane.showMessageDialog(this, "Data de envio inválida. O formato deve ser dd/MM/yyyy.", "Erro", JOptionPane.ERROR_MESSAGE);
+                txtDtEnvio.setText("");
+                return;
+            }
+            efetuarVenda();
+        }
+    }
+
+    private boolean validarData(String data) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        sdf.setLenient(false);
+        try {
+            Date dt = sdf.parse(data);
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
+    }
+
+    private void efetuarVenda() {
+        if (txtIdCliente.getText().isEmpty() || txtIdProduto.getText().isEmpty()
+                || txtQtdProd.getText().isEmpty() || txtValProd.getText().isEmpty()
+                || txtIdFunc.getText().isEmpty() || txtDtVenda.getText().isEmpty()
+                || txtDtPag.getText().isEmpty() || txtDtEnvio.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Preencha todos os campos obrigatórios.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Venda venda = new Venda();
+
+        venda.setClienteIdCliente(Integer.parseInt(txtIdCliente.getText()));
+        venda.setProdutoIdProduto(Integer.parseInt(txtIdProduto.getText()));
+        venda.setQtdProduto(Integer.parseInt(txtQtdProd.getText()));
+        venda.setValor(Double.parseDouble(txtValProd.getText()));
+        venda.setFuncionarioIdFuncionario(Integer.parseInt(txtIdFunc.getText()));
+
+        // Converter as strings de data em objetos Date
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            venda.setData(sdf.parse(txtDtVenda.getText()));
+            venda.setDataPagamento(sdf.parse(txtDtPag.getText()));
+            venda.setDataEnvioProduto(sdf.parse(txtDtEnvio.getText()));
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(this, "Erro ao converter data.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (inserirVendaNoBanco(venda)) {
+            JOptionPane.showMessageDialog(this, "Venda efetuada com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            limparCampos();
+        } else {
+            JOptionPane.showMessageDialog(this, "Erro ao efetuar a venda.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private boolean inserirVendaNoBanco(Venda venda) {
+        String sql = "INSERT INTO venda (Cliente_idCliente, Data_venda, Data_pagamento, Data_envio_produto, Valor_venda, Funcionario_idFuncionario, Produto_idProduto, Qtd_Produto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, venda.getClienteIdCliente());
+            stmt.setDate(2, new java.sql.Date(venda.getData().getTime()));
+            stmt.setDate(3, new java.sql.Date(venda.getDataPagamento().getTime()));
+            stmt.setDate(4, new java.sql.Date(venda.getDataEnvioProduto().getTime()));
+            stmt.setDouble(5, venda.getValor());
+            stmt.setInt(6, venda.getFuncionarioIdFuncionario());
+            stmt.setInt(7, venda.getProdutoIdProduto());
+            stmt.setInt(8, venda.getQtdProduto());
+
+            int rowsAffected = stmt.executeUpdate();
+            stmt.close();
+            return rowsAffected > 0;
+        } catch (SQLException ex) {
+            System.out.println("Erro ao inserir venda: " + ex.getMessage());
+            return false;
+        }
+    }
+
     private String consultarNome(int idCliente) {
         String nomeCliente = null;
         try {
@@ -114,6 +234,19 @@ public class TelaVenda extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Erro ao consultar o banco de dados: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
         return nomeCliente;
+    }
+
+    private void limparCampos() {
+        txtIdCliente.setText("");
+        txtCliente.setText("");
+        txtIdProduto.setText("");
+        txtQtdProd.setText("");
+        txtValProd.setText("");
+        txtIdFunc.setText("");
+        txtFunc.setText("");
+        txtDtVenda.setText("");
+        txtDtPag.setText("");
+        txtDtEnvio.setText("");
     }
 
     /**
@@ -437,51 +570,7 @@ public class TelaVenda extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEfetivarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEfetivarActionPerformed
-        // Validação dos campos obrigatórios
-        if (txtIdCliente.getText().isEmpty() || txtIdProduto.getText().isEmpty()
-                || txtQtdProd.getText().isEmpty() || txtValProd.getText().isEmpty()
-                || txtIdFunc.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Preencha todos os campos obrigatórios.", "Erro", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        // Criação da instância de Venda
-        Venda venda = new Venda();
-
-        // Preenchimento dos dados da venda
-        venda.setClienteIdCliente(Integer.parseInt(txtIdCliente.getText()));
-        venda.setProdutoIdProduto(Integer.parseInt(txtIdProduto.getText()));
-        venda.setQtdProduto(Integer.parseInt(txtQtdProd.getText()));
-        venda.setValor(Double.parseDouble(txtValProd.getText()));
-        venda.setFuncionarioIdFuncionario(Integer.parseInt(txtIdFunc.getText()));
-
-        // Processamento da venda (envio para o banco de dados)
-        if (inserirVendaNoBanco(venda)) {
-            JOptionPane.showMessageDialog(this, "Venda efetuada com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-            limparCampos(); // Limpa os campos após a venda ser efetuada
-        } else {
-            JOptionPane.showMessageDialog(this, "Erro ao efetuar a venda.", "Erro", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    // Método para inserir a venda no banco de dados
-    private boolean inserirVendaNoBanco(Venda venda) {
-        String sql = "INSERT INTO venda (Cliente_idCliente, Data_venda, Valor_venda, Funcionario_idFuncionario, Produto_idProduto, Qtd_Produto) VALUES (?, NOW(), ?, ?, ?, ?)";
-        try {
-            PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setInt(1, venda.getClienteIdCliente());
-            stmt.setDouble(2, venda.getValor());
-            stmt.setInt(3, venda.getFuncionarioIdFuncionario());
-            stmt.setInt(4, venda.getProdutoIdProduto());
-            stmt.setInt(5, venda.getQtdProduto());
-
-            int rowsAffected = stmt.executeUpdate();
-            stmt.close();
-            return rowsAffected > 0;
-        } catch (SQLException ex) {
-            System.out.println("Erro ao inserir venda: " + ex.getMessage());
-            return false;
-        }
+        efetuarVenda();
 
 
     }//GEN-LAST:event_btnEfetivarActionPerformed
@@ -498,15 +587,6 @@ public class TelaVenda extends javax.swing.JFrame {
         // TODO add your handling code here:
         dispose();
     }//GEN-LAST:event_btnSairActionPerformed
-    private void limparCampos() {
-        txtIdCliente.setText("");
-        txtCliente.setText("");
-        txtIdProduto.setText("");
-        txtQtdProd.setText("");
-        txtValProd.setText("");
-        txtIdFunc.setText("");
-        txtFunc.setText("");
-    }
 
     /**
      * @param args the command line arguments
