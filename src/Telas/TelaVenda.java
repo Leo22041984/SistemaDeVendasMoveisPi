@@ -62,6 +62,11 @@ public class TelaVenda extends javax.swing.JFrame {
                 txtIdProdutoKeyPressed(evt);
             }
         });
+        txtQtdProd.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtQtdProdKeyPressed(evt);
+            }
+        });
     }
 
     // Método para conectar ao banco de dados
@@ -174,8 +179,15 @@ public class TelaVenda extends javax.swing.JFrame {
             }
         }
     }
-    // Método para validação de data no formato dd/mm/yyyy
+    // Método para lidar com o evento de pressionar Enter no campo txtQtdProd
 
+    private void txtQtdProdKeyPressed(KeyEvent evt) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            calcularValorProduto(); // Chama o método para calcular o valor do produto
+        }
+    }
+
+    // Método para validação de data no formato dd/mm/yyyy
     private boolean validarData(String data) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         sdf.setLenient(false);
@@ -291,6 +303,50 @@ public class TelaVenda extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Erro ao consultar o banco de dados: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
         return nomeProduto;
+    }
+    // Método para calcular o valor total do produto com base na quantidade digitada
+
+    private void calcularValorProduto() {
+        if (!txtIdProduto.getText().isEmpty() && !txtQtdProd.getText().isEmpty()) {
+            int idProduto = Integer.parseInt(txtIdProduto.getText());
+            int qtdProduto = Integer.parseInt(txtQtdProd.getText());
+
+            // Consulta o banco de dados para obter o valor unitário do produto
+            
+            double valorUnitario = consultarValorUnitarioProduto(idProduto);
+
+            // Calcula o valor total do produto
+            
+            double valorTotal = valorUnitario * qtdProduto;
+
+            // Exibe o valor total no campo txtValProd
+            
+            txtValProd.setText(String.valueOf(valorTotal));
+        }
+    }
+
+    // Método para consultar o valor unitário do produto no banco de dados
+    
+    private double consultarValorUnitarioProduto(int idProduto) {
+        double valorUnitario = 0.0;
+        try {
+            if (conectar()) {
+                String sql = "SELECT Valor_unitario FROM Produto WHERE idProduto = ?";
+                PreparedStatement stmt = con.prepareStatement(sql);
+                stmt.setInt(1, idProduto);
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    valorUnitario = rs.getDouble("Valor_unitario");
+                }
+                rs.close();
+                stmt.close();
+            } else {
+                JOptionPane.showMessageDialog(this, "Erro ao conectar ao banco de dados.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Erro ao consultar o banco de dados: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        return valorUnitario;
     }
 
     // Método para limpar os campos após finalizações de ações ou ao clicar no botão limpar
