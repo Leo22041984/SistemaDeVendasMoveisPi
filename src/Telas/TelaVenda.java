@@ -57,6 +57,11 @@ public class TelaVenda extends javax.swing.JFrame {
                 txtDtEnvioKeyPressed(evt);
             }
         });
+        txtIdProduto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtIdProdutoKeyPressed(evt);
+            }
+        });
     }
 
     // Método para conectar ao banco de dados
@@ -91,6 +96,7 @@ public class TelaVenda extends javax.swing.JFrame {
             }
         }
     }
+    // Método para lidar com o evento de pressionar Enter no campo txtIdCliente
 
     private void txtIdClienteKeyPressed(KeyEvent evt) {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -111,6 +117,7 @@ public class TelaVenda extends javax.swing.JFrame {
             }
         }
     }
+    // Método para lidar com o evento de pressionar Enter no campo txtDtVenda
 
     private void txtDtVendaKeyPressed(KeyEvent evt) {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -122,6 +129,7 @@ public class TelaVenda extends javax.swing.JFrame {
             txtDtPag.requestFocus();
         }
     }
+    // Método para lidar com o evento de pressionar Enter no campo txtDtPag
 
     private void txtDtPagKeyPressed(KeyEvent evt) {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -133,6 +141,7 @@ public class TelaVenda extends javax.swing.JFrame {
             txtDtEnvio.requestFocus();
         }
     }
+    // Método para lidar com o evento de pressionar Enter no campo txtDtEnvio
 
     private void txtDtEnvioKeyPressed(KeyEvent evt) {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -144,6 +153,28 @@ public class TelaVenda extends javax.swing.JFrame {
             efetuarVenda();
         }
     }
+    // Método para lidar com o evento de pressionar Enter no campo txtIdProduto
+
+    private void txtIdProdutoKeyPressed(KeyEvent evt) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            int idProduto;
+            try {
+                idProduto = Integer.parseInt(txtIdProduto.getText());
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Por favor, insira um ID de produto válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            String nomeProduto = consultarNomeProduto(idProduto);
+            if (nomeProduto != null) {
+                txtProduto.setText(nomeProduto);
+            } else {
+                JOptionPane.showMessageDialog(this, "Produto não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
+                txtProduto.setText(""); // Limpa o campo txtProduto se o produto não for encontrado
+            }
+        }
+    }
+    // Método para validação de data no formato dd/mm/yyyy
 
     private boolean validarData(String data) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -155,6 +186,7 @@ public class TelaVenda extends javax.swing.JFrame {
             return false;
         }
     }
+    // Método para efetuar a conclusão da venda após as validações
 
     private void efetuarVenda() {
         if (txtIdCliente.getText().isEmpty() || txtIdProduto.getText().isEmpty()
@@ -173,7 +205,7 @@ public class TelaVenda extends javax.swing.JFrame {
         venda.setValor(Double.parseDouble(txtValProd.getText()));
         venda.setFuncionarioIdFuncionario(Integer.parseInt(txtIdFunc.getText()));
 
-        // Converter as strings de data em objetos Date
+        // Método para converter as strings de data em objetos Date
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         try {
             venda.setData(sdf.parse(txtDtVenda.getText()));
@@ -191,6 +223,7 @@ public class TelaVenda extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Erro ao efetuar a venda.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
+    // Método para inserir os dados da venda no banco de dados após as validações confirmadas
 
     private boolean inserirVendaNoBanco(Venda venda) {
         String sql = "INSERT INTO venda (Cliente_idCliente, Data_venda, Data_pagamento, Data_envio_produto, Valor_venda, Funcionario_idFuncionario, Produto_idProduto, Qtd_Produto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -213,6 +246,7 @@ public class TelaVenda extends javax.swing.JFrame {
             return false;
         }
     }
+    // Método para consultar nome do cliente em busca no banco de dados
 
     private String consultarNome(int idCliente) {
         String nomeCliente = null;
@@ -235,7 +269,31 @@ public class TelaVenda extends javax.swing.JFrame {
         }
         return nomeCliente;
     }
+    // Método para consultar nome do produto em busca no banco de dados
 
+    private String consultarNomeProduto(int idProduto) {
+        String nomeProduto = null;
+        try {
+            if (conectar()) {
+                String sql = "SELECT Nome_Produto FROM Produto WHERE idProduto = ?";
+                PreparedStatement stmt = con.prepareStatement(sql);
+                stmt.setInt(1, idProduto);
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    nomeProduto = rs.getString("Nome_Produto");
+                }
+                rs.close();
+                stmt.close();
+            } else {
+                JOptionPane.showMessageDialog(this, "Erro ao conectar ao banco de dados.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Erro ao consultar o banco de dados: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        return nomeProduto;
+    }
+
+    // Método para limpar os campos após finalizações de ações ou ao clicar no botão limpar
     private void limparCampos() {
         txtIdCliente.setText("");
         txtCliente.setText("");
@@ -570,12 +628,16 @@ public class TelaVenda extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEfetivarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEfetivarActionPerformed
+        // Chamada de método no botão efetivar
+
         efetuarVenda();
 
 
     }//GEN-LAST:event_btnEfetivarActionPerformed
 
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
+        // Chamada de método no botão limpar
+
         limparCampos();
     }//GEN-LAST:event_btnLimparActionPerformed
 
@@ -584,7 +646,8 @@ public class TelaVenda extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
-        // TODO add your handling code here:
+        // Chamada de método no botão sair
+
         dispose();
     }//GEN-LAST:event_btnSairActionPerformed
 
