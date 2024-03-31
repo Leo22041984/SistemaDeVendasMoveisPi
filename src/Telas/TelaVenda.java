@@ -6,6 +6,7 @@ package Telas;
 
 import Sistema.Venda;
 import Sistema.Funcionario;
+import Sistema.GeradorArquivoVenda;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
@@ -30,7 +31,8 @@ public class TelaVenda extends javax.swing.JFrame {
      */
     private Funcionario funcionario;
     private Connection con;
-    
+    private Venda venda;
+
     public TelaVenda() {
         initComponents();
         funcionario = new Funcionario();
@@ -55,7 +57,7 @@ public class TelaVenda extends javax.swing.JFrame {
                 }
             }
         });
-        
+
         txtIdFunc.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtIdFuncKeyPressed(evt);
@@ -101,7 +103,7 @@ public class TelaVenda extends javax.swing.JFrame {
                 txtAcrecKeyPressed(evt);
             }
         });
-        
+
     }
 
     // Método para conectar ao banco de dados
@@ -126,7 +128,7 @@ public class TelaVenda extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Por favor, insira um ID de funcionário válido.", "Erro", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            
+
             Funcionario funcionarioEncontrado = funcionario.consultarFuncionario(idFuncionario);
             if (funcionarioEncontrado != null) {
                 txtFunc.setText(funcionarioEncontrado.getNomeFuncionario());
@@ -147,7 +149,7 @@ public class TelaVenda extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Por favor, insira um ID de cliente válido.", "Erro", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            
+
             String nomeCliente = consultarNome(idCliente);
             if (nomeCliente != null) {
                 txtCliente.setText(nomeCliente);
@@ -204,7 +206,7 @@ public class TelaVenda extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Por favor, insira um ID de produto válido.", "Erro", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            
+
             String nomeProduto = consultarNomeProduto(idProduto);
             if (nomeProduto != null) {
                 txtProduto.setText(nomeProduto);
@@ -283,16 +285,15 @@ public class TelaVenda extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Preencha todos os campos obrigatórios.", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         Venda venda = new Venda();
-        
+
         venda.setClienteIdCliente(Integer.parseInt(txtIdCliente.getText()));
         venda.setProdutoIdProduto(Integer.parseInt(txtIdProduto.getText()));
         venda.setQtdProduto(Integer.parseInt(txtQtdProd.getText()));
         venda.setValor(Double.parseDouble(txtValProd.getText()));
         venda.setFuncionarioIdFuncionario(Integer.parseInt(txtIdFunc.getText()));
 
-        // Método para converter as strings de data em objetos Date
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         try {
             venda.setData(sdf.parse(txtDtVenda.getText()));
@@ -302,10 +303,13 @@ public class TelaVenda extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Erro ao converter data.", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         if (inserirVendaNoBanco(venda)) {
             JOptionPane.showMessageDialog(this, "Venda efetuada com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            // Limpar campos após a efetuação da venda
             limparCampos();
+            // Armazenar a venda para a posterior geração dos arquivos
+            this.venda = venda;
         } else {
             JOptionPane.showMessageDialog(this, "Erro ao efetuar a venda.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
@@ -332,11 +336,11 @@ public class TelaVenda extends javax.swing.JFrame {
                 stmt.setNull(7, java.sql.Types.VARCHAR); // Dados do cartão de crédito (nulo para pagamento em dinheiro)
                 stmt.setNull(8, java.sql.Types.INTEGER); // Quantidade de parcelas (nulo para pagamento em dinheiro)
             }
-            
+
             stmt.setInt(9, venda.getFuncionarioIdFuncionario());
             stmt.setInt(10, venda.getProdutoIdProduto());
             stmt.setInt(11, venda.getQtdProduto());
-            
+
             int rowsAffected = stmt.executeUpdate();
             stmt.close();
             return rowsAffected > 0;
@@ -774,7 +778,16 @@ public class TelaVenda extends javax.swing.JFrame {
         // Chamada de método no botão efetivar
 
         efetuarVenda();
-        
+
+        // Após a efetivação da venda, chame os métodos para gerar os arquivos PDF e DOCX
+        if (this.venda != null) {
+            GeradorArquivoVenda geradorArquivo = new GeradorArquivoVenda();
+            geradorArquivo.gerarPDF(venda);
+            geradorArquivo.gerarDOCX(venda);
+        } else {
+            JOptionPane.showMessageDialog(this, "Erro ao gerar arquivos. Venda não encontrada.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+
 
     }//GEN-LAST:event_btnEfetivarActionPerformed
 
