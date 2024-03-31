@@ -32,6 +32,7 @@ public class TelaVenda extends javax.swing.JFrame {
     public TelaVenda() {
         initComponents();
         funcionario = new Funcionario();
+
         txtIdFunc.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtIdFuncKeyPressed(evt);
@@ -67,6 +68,17 @@ public class TelaVenda extends javax.swing.JFrame {
                 txtQtdProdKeyPressed(evt);
             }
         });
+        txtDesc.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtDescKeyPressed(evt);
+            }
+        });
+        txtAcrec.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtAcrecKeyPressed(evt);
+            }
+        });
+
     }
 
     // Método para conectar ao banco de dados
@@ -184,6 +196,46 @@ public class TelaVenda extends javax.swing.JFrame {
     private void txtQtdProdKeyPressed(KeyEvent evt) {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             calcularValorProduto(); // Chama o método para calcular o valor do produto
+        }
+    }
+    // Método para lidar com o evento de pressionar Enter no campo txtDesc
+
+    private void txtDescKeyPressed(KeyEvent evt) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (!txtDesc.getText().isEmpty()) {
+                try {
+                    double desconto = Double.parseDouble(txtDesc.getText());
+                    double valorProduto = Double.parseDouble(txtValProd.getText());
+
+                    // Aplica o desconto ao valor do produto
+                    double novoValor = valorProduto - (valorProduto * (desconto / 100));
+
+                    // Atualiza o campo txtValProd com o novo valor
+                    txtValProd.setText(String.valueOf(novoValor));
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(this, "Por favor, insira um valor numérico válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+    }
+    // Método para lidar com o evento de pressionar Enter no campo txtAcrec
+
+    private void txtAcrecKeyPressed(java.awt.event.KeyEvent evt) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (!txtAcrec.getText().isEmpty()) {
+                try {
+                    double acrescimo = Double.parseDouble(txtAcrec.getText());
+                    double valorProduto = Double.parseDouble(txtValProd.getText());
+
+                    // Aplica o acréscimo ao valor do produto
+                    double novoValor = valorProduto + acrescimo;
+
+                    // Atualiza o campo txtValProd com o novo valor
+                    txtValProd.setText(String.valueOf(novoValor));
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(this, "Por favor, insira um valor numérico válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         }
     }
 
@@ -312,21 +364,17 @@ public class TelaVenda extends javax.swing.JFrame {
             int qtdProduto = Integer.parseInt(txtQtdProd.getText());
 
             // Consulta o banco de dados para obter o valor unitário do produto
-            
             double valorUnitario = consultarValorUnitarioProduto(idProduto);
 
             // Calcula o valor total do produto
-            
             double valorTotal = valorUnitario * qtdProduto;
 
             // Exibe o valor total no campo txtValProd
-            
             txtValProd.setText(String.valueOf(valorTotal));
         }
     }
 
     // Método para consultar o valor unitário do produto no banco de dados
-    
     private double consultarValorUnitarioProduto(int idProduto) {
         double valorUnitario = 0.0;
         try {
