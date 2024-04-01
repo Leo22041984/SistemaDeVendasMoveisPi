@@ -4,9 +4,12 @@
  */
 package Telas;
 
+import Sistema.Cliente;
 import Sistema.Venda;
 import Sistema.Funcionario;
 import Sistema.GeradorArquivoVenda;
+import Sistema.SistemaDAO;
+import java.sql.Statement;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
@@ -313,13 +316,14 @@ public class TelaVenda extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Erro ao efetuar a venda.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
+
     }
     // Método para inserir os dados da venda no banco de dados após as validações confirmadas
 
     private boolean inserirVendaNoBanco(Venda venda) {
         String sql = "INSERT INTO venda (Cliente_idCliente, Data_venda, Data_pagamento, Data_envio_produto, Valor_venda, Tipo_pagamento, Dados_Cartao_credito, Qtd_parcelas, Funcionario_idFuncionario, Produto_idProduto, Qtd_Produto) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
-            PreparedStatement stmt = con.prepareStatement(sql);
+            PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stmt.setInt(1, venda.getClienteIdCliente());
             stmt.setDate(2, new java.sql.Date(venda.getData().getTime()));
             stmt.setDate(3, new java.sql.Date(venda.getDataPagamento().getTime()));
@@ -330,7 +334,13 @@ public class TelaVenda extends javax.swing.JFrame {
             if (ComboBoxTpPag.getSelectedItem().toString().equals("Cartão de Crédito")) {
                 stmt.setString(6, "C"); // Tipo de pagamento para cartão de crédito
                 stmt.setString(7, txtDadosCartao.getText()); // Dados do cartão de crédito
-                stmt.setInt(8, Integer.parseInt(txtQtdParc.getText())); // Quantidade de parcelas
+                if (!txtQtdParc.getText().isEmpty()) {
+                    // Se a string não estiver vazia, converta para um número inteiro
+                    stmt.setInt(8, Integer.parseInt(txtQtdParc.getText()));
+                } else {
+                    // Se a string estiver vazia, defina o valor como zero no banco de dados, ou algum valor padrão adequado
+                    stmt.setInt(8, 0); // ou algum outro valor padrão adequado
+                }
             } else {
                 stmt.setString(6, "D"); // Tipo de pagamento para dinheiro
                 stmt.setNull(7, java.sql.Types.VARCHAR); // Dados do cartão de crédito (nulo para pagamento em dinheiro)
@@ -342,11 +352,19 @@ public class TelaVenda extends javax.swing.JFrame {
             stmt.setInt(11, venda.getQtdProduto());
 
             int rowsAffected = stmt.executeUpdate();
-            stmt.close();
-            return rowsAffected > 0;
+
+            // Recuperar o ID gerado pelo banco de dados
+            ResultSet generatedKeys = stmt.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                int idVenda = generatedKeys.getInt(1);
+                venda.setIdVenda(idVenda); // Defina o ID da venda no objeto Venda
+                return true; // Retorna true se a inserção for bem-sucedida
+            } else {
+                throw new SQLException("Falha ao obter o ID da venda após inserção.");
+            }
         } catch (SQLException ex) {
             System.out.println("Erro ao inserir venda: " + ex.getMessage());
-            return false;
+            return false; // Retorna false se ocorrer algum erro
         }
     }
 
@@ -780,14 +798,38 @@ public class TelaVenda extends javax.swing.JFrame {
         efetuarVenda();
 
         // Após a efetivação da venda, chame os métodos para gerar os arquivos PDF e DOCX
-        if (this.venda != null) {
-            GeradorArquivoVenda geradorArquivo = new GeradorArquivoVenda();
-            geradorArquivo.gerarPDF(venda);
-            geradorArquivo.gerarDOCX(venda);
-        } else {
-            JOptionPane.showMessageDialog(this, "Erro ao gerar arquivos. Venda não encontrada.", "Erro", JOptionPane.ERROR_MESSAGE);
-        }
+        boolean vendaEfetuadaComSucesso = inserirVendaNoBanco(this.venda);
+        if (vendaEfetuadaComSucesso) {
+            JOptionPane.showMessageDialog(this, "Venda efetuada com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            // Limpar campos após a efetuação da venda
+            limparCampos();
 
+            // Obter o ID do cliente associado à venda
+            int idCliente = venda.getClienteIdCliente();
+
+            // Instanciar o seu SistemaDAO
+            SistemaDAO sistemaDAO = new SistemaDAO();
+
+            sistemaDAO.conectar(); // Conecta ao banco de dados
+
+            // Obter o objeto Cliente correspondente ao ID
+            Cliente cliente = sistemaDAO.consultarClientePorId(idCliente);
+
+            sistemaDAO.desconectar(); // Desconecta do banco de dados
+
+            // Verifica se o cliente foi encontrado
+            if (cliente != null) {
+                GeradorArquivoVenda geradorArquivo = new GeradorArquivoVenda();
+
+                // Agora você pode chamar os métodos gerarPDF e gerarDOCX com ambos os objetos
+                geradorArquivo.gerarPDF(venda, cliente);
+                geradorArquivo.gerarDOCX(venda, cliente);
+            } else {
+                JOptionPane.showMessageDialog(this, "Cliente não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Erro ao efetuar a venda.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
 
     }//GEN-LAST:event_btnEfetivarActionPerformed
 
