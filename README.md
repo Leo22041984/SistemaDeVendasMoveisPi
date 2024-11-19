@@ -8,7 +8,7 @@
 
  - Java
  - MSQL
- - API NetBeans
+ - IDE NetBeans
  - JDBC
 
  ## Desenvolvedor
